@@ -1229,6 +1229,7 @@ const STATE = {
   },
   skills: [], customSkills: [],
   theme: 0,
+  layout: 'wolf',
   headerType: 'typing',
   headerText: '',
   features: {
@@ -1280,7 +1281,7 @@ function loadState() {
     if (!raw) return;
     const s = JSON.parse(raw);
     ['name','username','role','location','bio','socials','skills',
-     'customSkills','theme','headerType','headerText','features','repos'
+     'customSkills','theme','layout','headerType','headerText','features','repos'
     ].forEach(k => { if (s[k] !== undefined) STATE[k] = s[k]; });
   } catch(e) {}
 }
@@ -1485,6 +1486,34 @@ function step4(c) {
       <h2>Style & Theme</h2>
       <div class="step-badge">4 / 5</div>
     </div>
+
+    <label style="margin-bottom:0.75rem;display:block;">Layout Template</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem;">
+      <div onclick="selectLayout('wolf')" style="border:1px solid ${STATE.layout==='wolf'?'rgba(0,255,0,0.45)':'rgba(0,255,0,0.15)'};border-radius:12px;padding:14px;cursor:pointer;background:${STATE.layout==='wolf'?'rgba(0,255,0,0.05)':'rgba(0,0,0,0.3)'};transition:all .2s;position:relative;">
+        ${STATE.layout==='wolf'?'<div style="position:absolute;top:8px;right:8px;background:#00ff00;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;color:#000;">✓</div>':''}
+        <div style="font-family:\'Orbitron\',monospace;font-size:0.68rem;font-weight:700;color:#00ff00;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">🐺 Wolf Tech</div>
+        <div style="font-size:0.6rem;color:var(--gray-500);">Cyberpunk neon style with capsule/typing header, badge-based skills, glow effects</div>
+        <div style="display:flex;gap:3px;margin-top:8px;">
+          <div style="height:4px;flex:1;border-radius:2px;background:#00ff00;"></div>
+          <div style="height:4px;flex:1;border-radius:2px;background:#00aa00;"></div>
+          <div style="height:4px;flex:1;border-radius:2px;background:#111;"></div>
+        </div>
+      </div>
+      <div onclick="selectLayout('prg')" style="border:1px solid ${STATE.layout==='prg'?'rgba(88,101,242,0.6)':'rgba(88,101,242,0.2)'};border-radius:12px;padding:14px;cursor:pointer;background:${STATE.layout==='prg'?'rgba(88,101,242,0.06)':'rgba(0,0,0,0.3)'};transition:all .2s;position:relative;">
+        ${STATE.layout==='prg'?'<div style="position:absolute;top:8px;right:8px;background:#5865F2;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;color:#fff;">✓</div>':''}
+        <div style="font-family:\'Orbitron\',monospace;font-size:0.68rem;font-weight:700;color:#7dcfff;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">🎨 PRG Classic</div>
+        <div style="font-size:0.6rem;color:var(--gray-500);">Colorful devicons, platform badges, 3-col streak, trophies row, Snake graph</div>
+        <div style="display:flex;gap:3px;margin-top:8px;">
+          <div style="height:4px;flex:1;border-radius:2px;background:#5865F2;"></div>
+          <div style="height:4px;flex:1;border-radius:2px;background:#7dcfff;"></div>
+          <div style="height:4px;flex:1;border-radius:2px;background:#ff79c6;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <label style="margin-bottom:0.5rem;display:block;">Color Theme</label>
+    <p style="font-size:0.65rem;color:var(--gray-500);margin-bottom:0.75rem;letter-spacing:.03em;">Applies to stats cards, badges and accent colors.</p>
     <div id="theme-grid">${cards}</div>
     <div class="divider"></div>
     <label style="margin-bottom:0.75rem;">Header Animation</label>
@@ -1507,6 +1536,8 @@ function step4(c) {
       <button class="btn-next" onclick="nextStep()">Next: Features <i class="fas fa-arrow-right"></i></button>
     </div>`;
 }
+
+function selectLayout(l) { STATE.layout = l; saveState(); renderStep(STATE.step); updatePreview(); }
 
 function selectTheme(i) { STATE.theme=i; saveState(); renderStep(STATE.step); updateStats(); }
 function setHeader(type, btn) {
@@ -1603,7 +1634,7 @@ function prevStep() {
 /* ============================================================
    README GENERATOR
    ============================================================ */
-function generateReadme() {
+function generateReadmeWolf() {
   const u = STATE.username.trim() || 'WOLFTECH-254';
   const n = STATE.name || 'Silent Wolf';
   const theme = THEMES[STATE.theme];
@@ -1716,6 +1747,171 @@ function generateReadme() {
   // Footer
   md += `---\n\n<div align="center">\n\n*Generated with README.GEN ⚡ — WOLF TECH Edition*\n\n</div>\n`;
   return md;
+}
+
+/* ============================================================
+   PRG CLASSIC GENERATOR
+   ============================================================ */
+function generateReadmePRG() {
+  const u  = STATE.username.trim() || 'WOLFTECH-254';
+  const n  = STATE.name || 'Silent Wolf';
+  const theme = THEMES[STATE.theme];
+  const st    = theme.statsTheme;
+  const pc    = theme.color.replace('#','');
+  const headerText = STATE.headerText || `Hey 👋 What's Up?`;
+
+  // skillicons.dev key mapping
+  const siMap = {
+    'javascript':'js','typescript':'ts','python':'py','node.js':'nodejs',
+    'react':'react','vue':'vue','angular':'angular','express':'express',
+    'django':'django','flask':'flask','postgresql':'postgres','mongodb':'mongodb',
+    'mysql':'mysql','docker':'docker','aws':'aws','git':'git',
+    'tailwind css':'tailwind','next.js':'nextjs','rust':'rust','go':'golang',
+    'php':'php','laravel':'laravel','redis':'redis','graphql':'graphql',
+    'linux':'linux','solidity':'solidity','whatsapp api':'nodejs','baileys':'nodejs',
+    'kotlin':'kotlin','swift':'swift','dart':'dart','flutter':'flutter',
+    'firebase':'firebase','supabase':'supabase','figma':'figma','vscode':'vscode',
+    'github':'github','vercel':'vercel','netlify':'netlify'
+  };
+
+  // Build skillicons list
+  const allSkills = [...STATE.skills, ...STATE.customSkills];
+  const siIcons = allSkills.map(s => siMap[s.toLowerCase()]).filter(Boolean);
+  const siUniq  = [...new Set(siIcons)].join(',');
+
+  // Platform-colored social badges
+  const socialColors = {
+    website:  { color:'00B4D8', logo:'google-chrome',   logoColor:'white' },
+    twitter:  { color:'000000', logo:'x',               logoColor:'white' },
+    linkedin: { color:'0077B5', logo:'linkedin',        logoColor:'white' },
+    youtube:  { color:'FF0000', logo:'youtube',         logoColor:'white' },
+    telegram: { color:'2CA5E0', logo:'telegram',        logoColor:'white' },
+    whatsapp: { color:'25D366', logo:'whatsapp',        logoColor:'white' }
+  };
+
+  let md = '';
+
+  // ── Header ──────────────────────────────────────────────
+  md += `<h1 align="center">${headerText}</h1>\n`;
+  if (STATE.role || STATE.location) {
+    const parts = [STATE.role, STATE.location].filter(Boolean).join(' · ');
+    md += `<h3 align="center">${parts}</h3>\n`;
+  }
+  md += `\n`;
+
+  // ── Profile views counter ───────────────────────────────
+  if (STATE.features.profileViews) {
+    md += `<p align="center">\n`;
+    md += `  <img src="https://komarev.com/ghpvc/?username=${u}&color=${pc}&style=flat-square&label=PROFILE+VIEWS" />\n`;
+    md += `  <img src="https://img.shields.io/github/followers/${u}?style=flat-square&color=${pc}" />\n`;
+    md += `  <img src="https://img.shields.io/github/stars/${u}?style=flat-square&color=${pc}" />\n`;
+    md += `</p>\n\n`;
+  }
+
+  // ── About ───────────────────────────────────────────────
+  if (STATE.bio || STATE.name || STATE.role || STATE.location) {
+    md += `## 🙋‍♂️ About Me\n\n`;
+    if (STATE.bio) md += `> ${STATE.bio}\n\n`;
+    if (STATE.name)     md += `- 👤 **Name:** ${STATE.name}\n`;
+    if (STATE.role)     md += `- 💼 **Role:** ${STATE.role}\n`;
+    if (STATE.location) md += `- 📍 **Location:** ${STATE.location}\n`;
+    md += `- 🐙 **GitHub:** [@${u}](https://github.com/${u})\n\n`;
+  }
+
+  // ── Socials (platform-colored badges) ──────────────────
+  const enabledSocials = Object.entries(STATE.socials).filter(([,v]) => v.enabled && v.value);
+  if (enabledSocials.length > 0) {
+    md += `## 🌐 Connect With Me\n\n<p align="center">\n`;
+    enabledSocials.forEach(([key, s]) => {
+      const meta = SOCIAL_META[key];
+      const col  = socialColors[key] || { color:'555', logo:key, logoColor:'white' };
+      md += `  <a href="${s.value}" target="_blank"><img src="https://img.shields.io/badge/${encodeURIComponent(meta.label)}-${col.color}?style=for-the-badge&logo=${col.logo}&logoColor=${col.logoColor}" /></a>\n`;
+    });
+    md += `</p>\n\n`;
+  }
+
+  // ── Tech Stack (skillicons.dev) ─────────────────────────
+  if (allSkills.length > 0) {
+    md += `## 🛠️ Tech Stack\n\n`;
+    if (siUniq) {
+      md += `<p align="center">\n`;
+      md += `  <img src="https://skillicons.dev/icons?i=${siUniq}&theme=dark" />\n`;
+      md += `</p>\n\n`;
+    } else {
+      // Fallback shields for custom-only skills
+      md += `<p align="center">\n`;
+      allSkills.forEach(s => {
+        const logo = s.toLowerCase().replace(/\s+/g,'-');
+        md += `  <img src="https://img.shields.io/badge/${encodeURIComponent(s)}-${pc}?style=for-the-badge&logo=${logo}&logoColor=white" />\n`;
+      });
+      md += `</p>\n\n`;
+    }
+  }
+
+  // ── GitHub Stats (3-column row like PRG) ────────────────
+  if (STATE.features.stats || STATE.features.streak || STATE.features.topLangs) {
+    md += `## 📊 GitHub Stats\n\n<div align="center">\n\n`;
+    if (STATE.features.stats)
+      md += `  <img height="180" src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&count_private=true" />\n`;
+    if (STATE.features.topLangs)
+      md += `  <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true" />\n`;
+    md += `\n</div>\n\n`;
+    if (STATE.features.streak) {
+      md += `<div align="center">\n\n`;
+      md += `  <img src="https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true" />\n\n`;
+      md += `</div>\n\n`;
+    }
+  }
+
+  // ── Trophies ────────────────────────────────────────────
+  if (STATE.features.trophies) {
+    md += `## 🏆 GitHub Trophies\n\n<p align="center">\n`;
+    md += `  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&no-bg=true&margin-w=4" />\n`;
+    md += `</p>\n\n`;
+  }
+
+  // ── Activity Graph ──────────────────────────────────────
+  if (STATE.features.activityGraph) {
+    md += `## 📈 Contribution Graph\n\n<p align="center">\n`;
+    md += `  <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true" />\n`;
+    md += `</p>\n\n`;
+  }
+
+  // ── Snake graph ─────────────────────────────────────────
+  md += `## 🐍 Contribution Snake\n\n<p align="center">\n`;
+  md += `  <picture>\n`;
+  md += `    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/${u}/${u}/output/github-contribution-grid-snake-dark.svg">\n`;
+  md += `    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/${u}/${u}/output/github-contribution-grid-snake.svg">\n`;
+  md += `    <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/${u}/${u}/output/github-contribution-grid-snake.svg">\n`;
+  md += `  </picture>\n</p>\n\n`;
+  md += `> ⚙️ *Snake animation requires a [GitHub Actions workflow](https://github.com/Platane/snk) — add it to your profile repo.*\n\n`;
+
+  // ── Featured Repos ──────────────────────────────────────
+  const repos = STATE.repos.filter(r => r.trim());
+  if (repos.length > 0) {
+    md += `## 🚀 Featured Projects\n\n<div align="center">\n\n`;
+    repos.forEach(repo => {
+      const full = repo.includes('/') ? repo : `${u}/${repo}`;
+      const repoName = full.split('/')[1];
+      md += `  [![${full}](https://github-readme-stats.vercel.app/api/pin/?username=${full.split('/')[0]}&repo=${repoName}&theme=${st})](https://github.com/${full})\n`;
+    });
+    md += `\n</div>\n\n`;
+  }
+
+  // ── Work with me ────────────────────────────────────────
+  if (STATE.features.workWithMe) {
+    md += `## 🤝 Open to Collaborate\n\n`;
+    md += `I'm open to collaborations, freelance projects, and interesting opportunities.\n\n`;
+    md += `> 💬 Feel free to reach out — let's build something amazing together!\n\n`;
+  }
+
+  // ── Footer ──────────────────────────────────────────────
+  md += `---\n\n<p align="center">\n  <i>Generated with <strong>README.GEN ⚡ — WOLF TECH Edition</strong> · PRG Classic layout</i>\n</p>\n`;
+  return md;
+}
+
+function generateReadme() {
+  return STATE.layout === 'prg' ? generateReadmePRG() : generateReadmeWolf();
 }
 
 /* ============================================================
