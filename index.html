@@ -1696,28 +1696,34 @@ function generateReadmeWolf() {
   }
 
   // Stats
+  const _sm = {'chartreuse-dark':'chartreuse-dark','radical':'radical','dark':'dark','algolia':'algolia','sunset-gradient':'solarized-dark','blood':'highcontrast','dracula':'dracula','tokyonight':'tokyonight','nord':'nord','gruvbox':'gruvbox'};
+  const _sk = {'chartreuse-dark':'dark','radical':'radical','dark':'dark','algolia':'dark','sunset-gradient':'solarized-dark','blood':'highcontrast','dracula':'dracula','tokyonight':'tokyonight','nord':'nord','gruvbox':'gruvbox'};
+  const _tr = {'chartreuse-dark':'matrix','radical':'radical','dark':'flat','algolia':'discord','sunset-gradient':'monokai','blood':'dracula','dracula':'dracula','tokyonight':'onedark','nord':'nord','gruvbox':'gruvbox'};
+  const _gr = {'chartreuse-dark':'react-dark','radical':'radical','dark':'github','algolia':'react-dark','sunset-gradient':'xcode','blood':'rogue','dracula':'dracula','tokyonight':'tokyo-night','nord':'high-contrast','gruvbox':'merko'};
+  const stS = _sm[st]||'dark', stK = _sk[st]||'dark', stT = _tr[st]||'flat', stG = _gr[st]||'github';
+
   if (STATE.features.stats || STATE.features.streak || STATE.features.topLangs) {
     md += `## 📊 GitHub Stats\n\n<div align="center">\n\n`;
     if (STATE.features.stats)
-      md += `![Stats](https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&bg_color=00000000)\n\n`;
+      md += `![Stats](https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${stS}&hide_border=true&bg_color=00000000&count_private=true&rank_icon=github)\n\n`;
     if (STATE.features.streak)
-      md += `![Streak](https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true&background=00000000)\n\n`;
+      md += `![Streak](https://streak-stats.demolab.com/?user=${u}&theme=${stK}&hide_border=true&background=00000000)\n\n`;
     if (STATE.features.topLangs)
-      md += `![Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true&bg_color=00000000)\n\n`;
+      md += `![Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${stS}&hide_border=true&bg_color=00000000&langs_count=8)\n\n`;
     md += `</div>\n\n`;
   }
 
   // Activity graph
   if (STATE.features.activityGraph) {
     md += `## 📈 Activity Graph\n\n<div align="center">\n\n`;
-    md += `[![Activity](https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true&bg_color=00000000)](https://github.com/${u})\n\n`;
+    md += `[![Activity](https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${stG}&hide_border=true&area=true&bg_color=00000000)](https://github.com/${u})\n\n`;
     md += `</div>\n\n`;
   }
 
   // Trophies
   if (STATE.features.trophies) {
     md += `## 🏆 Trophies\n\n<div align="center">\n\n`;
-    md += `[![Trophies](https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&margin-w=10)](https://github.com/${u})\n\n`;
+    md += `[![Trophies](https://github-profile-trophy.vercel.app/?username=${u}&theme=${stT}&no-frame=true&no-bg=true&margin-w=10)](https://github.com/${u})\n\n`;
     md += `</div>\n\n`;
   }
 
@@ -1847,16 +1853,22 @@ function generateReadmePRG() {
   }
 
   // ── GitHub Stats (3-column row like PRG) ────────────────
+  const _pSm = {'chartreuse-dark':'chartreuse-dark','radical':'radical','dark':'dark','algolia':'algolia','sunset-gradient':'solarized-dark','blood':'highcontrast','dracula':'dracula','tokyonight':'tokyonight','nord':'nord','gruvbox':'gruvbox'};
+  const _pSk = {'chartreuse-dark':'dark','radical':'radical','dark':'dark','algolia':'dark','sunset-gradient':'solarized-dark','blood':'highcontrast','dracula':'dracula','tokyonight':'tokyonight','nord':'nord','gruvbox':'gruvbox'};
+  const _pTr = {'chartreuse-dark':'matrix','radical':'radical','dark':'flat','algolia':'discord','sunset-gradient':'monokai','blood':'dracula','dracula':'dracula','tokyonight':'onedark','nord':'nord','gruvbox':'gruvbox'};
+  const _pGr = {'chartreuse-dark':'react-dark','radical':'radical','dark':'github','algolia':'react-dark','sunset-gradient':'xcode','blood':'rogue','dracula':'dracula','tokyonight':'tokyo-night','nord':'high-contrast','gruvbox':'merko'};
+  const pStS = _pSm[st]||'dark', pStK = _pSk[st]||'dark', pStT = _pTr[st]||'flat', pStG = _pGr[st]||'github';
+
   if (STATE.features.stats || STATE.features.streak || STATE.features.topLangs) {
     md += `## 📊 GitHub Stats\n\n<div align="center">\n\n`;
     if (STATE.features.stats)
-      md += `  <img height="180" src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&count_private=true" />\n`;
+      md += `  <img height="180" src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${pStS}&hide_border=true&count_private=true&rank_icon=github" />\n`;
     if (STATE.features.topLangs)
-      md += `  <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true" />\n`;
+      md += `  <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${pStS}&hide_border=true&langs_count=8" />\n`;
     md += `\n</div>\n\n`;
     if (STATE.features.streak) {
       md += `<div align="center">\n\n`;
-      md += `  <img src="https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true" />\n\n`;
+      md += `  <img src="https://streak-stats.demolab.com/?user=${u}&theme=${pStK}&hide_border=true" />\n\n`;
       md += `</div>\n\n`;
     }
   }
@@ -1864,14 +1876,14 @@ function generateReadmePRG() {
   // ── Trophies ────────────────────────────────────────────
   if (STATE.features.trophies) {
     md += `## 🏆 GitHub Trophies\n\n<p align="center">\n`;
-    md += `  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&no-bg=true&margin-w=4" />\n`;
+    md += `  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${pStT}&no-frame=true&no-bg=true&margin-w=4" />\n`;
     md += `</p>\n\n`;
   }
 
   // ── Activity Graph ──────────────────────────────────────
   if (STATE.features.activityGraph) {
     md += `## 📈 Contribution Graph\n\n<p align="center">\n`;
-    md += `  <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true" />\n`;
+    md += `  <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${pStG}&hide_border=true&area=true" />\n`;
     md += `</p>\n\n`;
   }
 
@@ -2032,46 +2044,8 @@ function buildVisualPreview() {
       </div>`;
   }
 
-  // ── Stats ─────────────────────────────────────────────────
-  let statsHTML = '';
-  if (STATE.features.stats || STATE.features.streak || STATE.features.topLangs) {
-    let imgs = '';
-    if (STATE.features.stats)
-      imgs += `<img src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&bg_color=00000000" style="margin:4px;max-width:48%;" onerror="this.style.opacity=0.3">`;
-    if (STATE.features.streak)
-      imgs += `<img src="https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true&background=00000000" style="margin:4px;max-width:48%;" onerror="this.style.opacity=0.3">`;
-    if (STATE.features.topLangs)
-      imgs += `<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true&bg_color=00000000" style="margin:4px;max-width:48%;" onerror="this.style.opacity=0.3">`;
-    statsHTML = `
-      <div class="pv-section">
-        <div class="pv-heading">📊 GitHub Stats</div>
-        <div style="text-align:center;">${imgs}</div>
-      </div>`;
-  }
-
-  // ── Activity graph ───────────────────────────────────────
-  let graphHTML = '';
-  if (STATE.features.activityGraph) {
-    graphHTML = `
-      <div class="pv-section">
-        <div class="pv-heading">📈 Activity Graph</div>
-        <div style="text-align:center;">
-          <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true&bg_color=00000000" style="width:100%;max-width:600px;" onerror="this.style.opacity=0.3">
-        </div>
-      </div>`;
-  }
-
-  // ── Trophies ─────────────────────────────────────────────
-  let trophyHTML = '';
-  if (STATE.features.trophies) {
-    trophyHTML = `
-      <div class="pv-section">
-        <div class="pv-heading">🏆 Trophies</div>
-        <div style="text-align:center;">
-          <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&margin-w=10" style="max-width:100%;" onerror="this.style.opacity=0.3">
-        </div>
-      </div>`;
-  }
+  // feature-gated sections replaced by always-visible live sections below
+  let statsHTML = '', graphHTML = '', trophyHTML = '';
 
   // ── Work with me ─────────────────────────────────────────
   let workHTML = '';
@@ -2105,19 +2079,52 @@ function buildVisualPreview() {
       </div>`;
   }
 
+  // ── Theme compatibility maps for each stats service ───────
+  // github-readme-stats valid themes
+  const statsThemeMap = {
+    'chartreuse-dark':'chartreuse-dark','radical':'radical','dark':'dark',
+    'algolia':'algolia','sunset-gradient':'solarized-dark','blood':'highcontrast',
+    'dracula':'dracula','tokyonight':'tokyonight','nord':'nord','gruvbox':'gruvbox'
+  };
+  // streak-stats.demolab.com valid themes
+  const streakThemeMap = {
+    'chartreuse-dark':'dark','radical':'radical','dark':'dark',
+    'algolia':'dark','sunset-gradient':'solarized-dark','blood':'highcontrast',
+    'dracula':'dracula','tokyonight':'tokyonight','nord':'nord','gruvbox':'gruvbox'
+  };
+  // github-profile-trophy valid themes
+  const trophyThemeMap = {
+    'chartreuse-dark':'matrix','radical':'radical','dark':'flat',
+    'algolia':'discord','sunset-gradient':'monokai','blood':'dracula',
+    'dracula':'dracula','tokyonight':'onedark','nord':'nord','gruvbox':'gruvbox'
+  };
+  // activity-graph valid themes
+  const graphThemeMap = {
+    'chartreuse-dark':'react-dark','radical':'radical','dark':'github',
+    'algolia':'react-dark','sunset-gradient':'xcode','blood':'rogue',
+    'dracula':'dracula','tokyonight':'tokyo-night','nord':'high-contrast','gruvbox':'merko'
+  };
+
+  const stSafe      = statsThemeMap[st]  || 'dark';
+  const stStreak    = streakThemeMap[st] || 'dark';
+  const stTrophy    = trophyThemeMap[st] || 'flat';
+  const stGraph     = graphThemeMap[st]  || 'github';
+
+  const errFallback = `this.style.cssText='opacity:.25;filter:grayscale(1)'`;
+
   // ── Always-visible stats cards (real live images) ────────
   const liveStatsHTML = `
     <div class="pv-section">
       <div class="pv-heading">📊 GitHub Stats</div>
       <div class="stats-grid">
-        <img src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&bg_color=00000000&count_private=true"
-             onerror="this.style.opacity='0.25'" loading="lazy">
-        <img src="https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true&background=00000000"
-             onerror="this.style.opacity='0.25'" loading="lazy">
+        <img src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${stSafe}&hide_border=true&bg_color=0d1117&count_private=true&rank_icon=github"
+             onerror="${errFallback}">
+        <img src="https://streak-stats.demolab.com/?user=${u}&theme=${stStreak}&hide_border=true&background=0d1117"
+             onerror="${errFallback}">
       </div>
       <div style="text-align:center;margin-top:8px;">
-        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true&bg_color=00000000&langs_count=8"
-             style="max-width:96%;" onerror="this.style.opacity='0.25'" loading="lazy">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${stSafe}&hide_border=true&bg_color=0d1117&langs_count=8&card_width=500"
+             style="max-width:100%;" onerror="${errFallback}">
       </div>
     </div>`;
 
@@ -2125,8 +2132,8 @@ function buildVisualPreview() {
     <div class="pv-section">
       <div class="pv-heading">🏆 Trophies</div>
       <div style="text-align:center;">
-        <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&margin-w=6&column=4"
-             style="max-width:100%;" onerror="this.style.opacity='0.25'" loading="lazy">
+        <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${stTrophy}&no-frame=true&margin-w=8&column=4&no-bg=true"
+             style="max-width:100%;" onerror="${errFallback}">
       </div>
     </div>`;
 
@@ -2134,8 +2141,8 @@ function buildVisualPreview() {
     <div class="pv-section">
       <div class="pv-heading">📈 Activity Graph</div>
       <div style="text-align:center;">
-        <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true&bg_color=00000000"
-             style="width:100%;max-width:700px;" onerror="this.style.opacity='0.25'" loading="lazy">
+        <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${stGraph}&hide_border=true&area=true&bg_color=0d1117"
+             style="width:100%;border-radius:8px;" onerror="${errFallback}">
       </div>
     </div>`;
 
