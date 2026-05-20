@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "yt1wg9t8R3CyMEzyCpo71"
+uri = "file://README.md"
+type = "text"
+title = "README.GEN — WOLF TECH Edition"
