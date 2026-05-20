@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>README.GEN — WOLF TECH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── VARIABLES ─────────────────────────────────────────── */
+:root {
+  --primary:        #00ff00;
+  --primary-dim:    rgba(0,255,0,0.15);
+  --primary-border: rgba(0,255,0,0.2);
+  --primary-hover:  rgba(0,255,0,0.4);
+  --primary-glow:   0 0 20px rgba(0,255,0,0.3);
+  --primary-glow-lg:0 0 40px rgba(0,255,0,0.2);
+  --card-bg:        rgba(0,0,0,0.4);
+  --gray-800: #1a1a1a;
+  --gray-500: #6b7280;
+  --gray-400: #9ca3af;
+  --gray-300: #d1d5db;
+  --white:    #ffffff;
+  --danger:   #ff4444;
+  --warn:     #ffaa00;
+}
+
+/* ── BASE ──────────────────────────────────────────────── */
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: 'JetBrains Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── NEON GRID BACKGROUND ──────────────────────────────── */
+.neon-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(0,255,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.neon-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,255,0,0.06) 0%, transparent 70%);
+}
+
+/* ── SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: rgba(0,255,0,0.3); border-radius: 2px; }
+
+/* ── NAV ───────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--primary-border);
+}
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(0,255,0,0.05);
+  border: 1px solid var(--primary-border);
+  display: flex; align-items: center; justify-content: center;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+.logo-icon i { color: var(--primary); font-size: 1rem; }
+.logo-text { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 1.1rem; letter-spacing: 0.15em; }
+.logo-wolf { color: var(--primary); }
+.logo-bot  { color: var(--gray-300); }
+.logo-sub  { font-size: 0.62rem; color: var(--gray-500); font-family: 'JetBrains Mono', monospace; margin-top: 2px; letter-spacing: 0.1em; }
+
+.nav-actions { display: flex; gap: 8px; }
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px;
+  background: transparent;
+  color: var(--gray-400);
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+.nav-btn:hover { border-color: var(--primary-hover); color: var(--primary); background: rgba(0,255,0,0.05); }
+.nav-btn.danger:hover { border-color: rgba(255,68,68,0.5); color: var(--danger); background: rgba(255,68,68,0.05); }
+
+.session-badge {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.68rem;
+  color: var(--gray-500);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+.session-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+/* ── MAIN LAYOUT ───────────────────────────────────────── */
+#app {
+  padding-top: 64px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+}
+
+#main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── WIZARD COLUMN ─────────────────────────────────────── */
+#wizard-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-height: calc(100vh - 88px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,255,0,0.2) transparent;
+  padding-right: 4px;
+}
+
+/* ── PREVIEW COLUMN ────────────────────────────────────── */
+#preview-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 88px);
+}
+
+/* ── CARDS ─────────────────────────────────────────────── */
+.card {
+  border-radius: 16px;
+  border: 1px solid var(--primary-border);
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,0,0.25), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.card:hover { border-color: var(--primary-hover); box-shadow: var(--primary-glow-lg); }
+.card:hover::before { opacity: 1; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--primary-border);
+}
+.card-header-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: rgba(0,255,0,0.06);
+  border: 1px solid var(--primary-border);
+  display: flex; align-items: center; justify-content: center;
+  animation: glowPulse 4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.card-header-icon i { color: var(--primary); font-size: 0.85rem; }
+.card-header h2 {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--white);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.card-header .step-badge {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: var(--primary);
+  background: rgba(0,255,0,0.08);
+  border: 1px solid rgba(0,255,0,0.2);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* ── STEP INDICATOR ────────────────────────────────────── */
+#step-indicator {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+.step-item { display: flex; align-items: center; flex: 1; position: relative; }
+.step-circle {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,255,0,0.25);
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--gray-500);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s;
+}
+.step-circle.active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(0,255,0,0.08);
+  box-shadow: 0 0 12px rgba(0,255,0,0.2);
+}
+.step-circle.done {
+  border-color: rgba(0,255,0,0.5);
+  background: rgba(0,255,0,0.12);
+  color: var(--primary);
+  font-size: 0.7rem;
+}
+.step-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(0,255,0,0.15);
+  margin: 0 -1px;
+  transition: background 0.3s;
+}
+.step-line.done { background: rgba(0,255,0,0.35); }
+.step-label {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.58rem;
+  color: var(--gray-500);
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+.step-label.active { color: var(--primary); }
+.step-label.done { color: rgba(0,255,0,0.5); }
+.step-indicator-wrap { padding-bottom: 36px; }
+
+/* ── FORM ELEMENTS ─────────────────────────────────────── */
+.form-group { margin-bottom: 1rem; }
+
+label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--gray-400);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+label .req { color: var(--primary); margin-left: 2px; }
+label .hint { font-size: 0.65rem; color: var(--gray-500); text-transform: none; letter-spacing: 0; margin-left: 6px; }
+
+input[type="text"],
+input[type="url"],
+textarea {
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  padding: 9px 12px;
+  transition: all 0.2s;
+  outline: none;
+  -webkit-appearance: none;
+}
+input[type="text"]::placeholder,
+input[type="url"]::placeholder,
+textarea::placeholder { color: var(--gray-500); }
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+  border-color: rgba(0,255,0,0.45);
+  background: rgba(0,255,0,0.03);
+  box-shadow: 0 0 0 3px rgba(0,255,0,0.06);
+}
+
+textarea { resize: vertical; min-height: 72px; }
+
+.char-count {
+  text-align: right;
+  font-size: 0.62rem;
+  color: var(--gray-500);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 4px;
+}
+.char-count.warn { color: var(--warn); }
+.char-count.over { color: var(--danger); }
+
+/* ── TOGGLE ROWS (SOCIALS) ─────────────────────────────── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--primary-border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+  cursor: default;
+}
+.toggle-row.active {
+  border-color: rgba(0,255,0,0.35);
+  background: rgba(0,255,0,0.03);
+}
+.toggle-row:hover { border-color: var(--primary-hover); }
+
+.tr-icon { color: var(--primary); width: 18px; font-size: 0.85rem; text-align: center; flex-shrink: 0; }
+.tr-label { flex: 1; font-size: 0.75rem; color: var(--gray-300); letter-spacing: 0.04em; }
+.tr-input { flex: 2; }
+.tr-input input { font-size: 0.75rem; padding: 7px 10px; border-radius: 6px; }
+
+.toggle-switch {
+  width: 36px; height: 20px;
+  background: rgba(0,255,0,0.06);
+  border: 1px solid var(--primary-border);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.25s;
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gray-500);
+  transition: all 0.25s;
+}
+.toggle-switch.on { background: rgba(0,255,0,0.12); border-color: rgba(0,255,0,0.4); }
+.toggle-switch.on::after { left: 18px; background: var(--primary); box-shadow: 0 0 6px rgba(0,255,0,0.4); }
+
+/* ── SKILL TAGS ─────────────────────────────────────────── */
+#skill-cloud { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1rem; }
+.skill-tag {
+  padding: 5px 12px;
+  border: 1px solid var(--primary-border);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--gray-400);
+  background: transparent;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+.skill-tag:hover { border-color: var(--primary-hover); color: var(--primary); background: rgba(0,255,0,0.04); }
+.skill-tag.selected {
+  border-color: rgba(0,255,0,0.4);
+  color: var(--primary);
+  background: rgba(0,255,0,0.08);
+}
+.skill-tag.custom-tag { border-style: dashed; }
+.skill-tag .remove { margin-left: 5px; color: var(--danger); font-size: 0.8em; }
+
+#custom-skill-row { display: flex; gap: 8px; }
+#custom-skill-row input { flex: 1; }
+#custom-skill-row .add-btn {
+  padding: 9px 16px;
+  border: 1px solid rgba(0,255,0,0.3);
+  background: rgba(0,255,0,0.06);
+  color: var(--primary);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+#custom-skill-row .add-btn:hover { background: rgba(0,255,0,0.12); border-color: var(--primary-hover); }
+
+/* ── THEME CARDS ────────────────────────────────────────── */
+#theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.theme-card {
+  border: 1px solid var(--primary-border);
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.theme-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,0,0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.theme-card:hover { border-color: var(--primary-hover); transform: translateY(-3px); }
+.theme-card:hover::before { opacity: 1; }
+.theme-card.selected { border-color: rgba(0,255,0,0.45); background: rgba(0,255,0,0.04); box-shadow: 0 0 20px rgba(0,255,0,0.1); }
+.theme-card.selected::before { opacity: 1; }
+
+.theme-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.theme-card.selected .theme-check { opacity: 1; }
+.t-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.t-desc { font-size: 0.62rem; color: var(--gray-500); letter-spacing: 0.04em; margin-top: 2px; }
+.t-preview { display: flex; gap: 4px; margin-top: 9px; }
+.t-swatch { height: 5px; border-radius: 2px; flex: 1; }
+
+/* Per-theme colors */
+.theme-card[data-t="0"] .t-name { color: #00ff00; }
+.theme-card[data-t="0"] .theme-check { background: #00ff00; color: #000; }
+.theme-card[data-t="1"] .t-name { color: #bf5fff; }
+.theme-card[data-t="1"] .theme-check { background: #bf5fff; color: #000; }
+.theme-card[data-t="2"] .t-name { color: #e0e0e0; }
+.theme-card[data-t="2"] .theme-check { background: #e0e0e0; color: #000; }
+.theme-card[data-t="3"] .t-name { color: #00aaff; }
+.theme-card[data-t="3"] .theme-check { background: #00aaff; color: #000; }
+.theme-card[data-t="4"] .t-name { color: #ff6b35; }
+.theme-card[data-t="4"] .theme-check { background: #ff6b35; color: #000; }
+.theme-card[data-t="5"] .t-name { color: #ff3333; }
+.theme-card[data-t="5"] .theme-check { background: #ff3333; color: #fff; }
+.theme-card[data-t="6"] .t-name { color: #ff79c6; }
+.theme-card[data-t="6"] .theme-check { background: #ff79c6; color: #000; }
+.theme-card[data-t="7"] .t-name { color: #7dcfff; }
+.theme-card[data-t="7"] .theme-check { background: #7dcfff; color: #000; }
+.theme-card[data-t="8"] .t-name { color: #88c0d0; }
+.theme-card[data-t="8"] .theme-check { background: #88c0d0; color: #000; }
+.theme-card[data-t="9"] .t-name { color: #ffd700; }
+.theme-card[data-t="9"] .theme-check { background: #ffd700; color: #000; }
+
+/* ── THEME GRID expanded ─────────────────────────────────── */
+#theme-grid { grid-template-columns: 1fr 1fr; }
+
+/* ── HEADER TYPE BUTTONS ────────────────────────────────── */
+.header-type-row { display: flex; gap: 8px; margin-bottom: 1rem; }
+.htype-btn {
+  flex: 1;
+  padding: 9px 12px;
+  background: transparent;
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  color: var(--gray-400);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+.htype-btn.active {
+  border-color: rgba(0,255,0,0.45);
+  color: var(--primary);
+  background: rgba(0,255,0,0.08);
+}
+.htype-btn:hover:not(.active) { border-color: var(--primary-hover); color: var(--primary); }
+
+/* ── FEATURE GRID ───────────────────────────────────────── */
+.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.feature-item:hover { border-color: var(--primary-hover); background: rgba(0,255,0,0.03); }
+.feature-item.on { border-color: rgba(0,255,0,0.4); background: rgba(0,255,0,0.05); }
+.f-icon { color: var(--primary); width: 16px; font-size: 0.78rem; flex-shrink: 0; }
+.f-label { flex: 1; font-size: 0.7rem; color: var(--gray-300); letter-spacing: 0.02em; }
+.f-check {
+  width: 14px; height: 14px;
+  border: 1px solid var(--primary-border);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.55rem;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  color: transparent;
+}
+.feature-item.on .f-check {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+  box-shadow: 0 0 6px rgba(0,255,0,0.3);
+}
+
+.repo-list { margin-top: 1rem; }
+.repo-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.repo-num { font-size: 0.65rem; color: var(--gray-500); font-family: 'JetBrains Mono', monospace; width: 18px; text-align: right; flex-shrink: 0; }
+.repo-row input { flex: 1; }
+
+/* ── NAV BUTTONS ────────────────────────────────────────── */
+.nav-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--primary-border);
+}
+.btn-prev {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--primary-border);
+  color: var(--gray-400);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+.btn-prev:hover { border-color: var(--primary-hover); color: var(--primary); }
+.btn-next {
+  flex: 1;
+  padding: 10px 20px;
+  background: rgba(0,255,0,0.08);
+  border: 1px solid rgba(0,255,0,0.3);
+  color: var(--primary);
+  border-radius: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-next:hover {
+  background: rgba(0,255,0,0.15);
+  border-color: rgba(0,255,0,0.5);
+  box-shadow: var(--primary-glow);
+  transform: translateY(-2px);
+}
+.btn-next:active { transform: translateY(0); }
+
+/* ── DIVIDER ────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--primary-border); margin: 1rem 0; }
+
+/* ── PREVIEW PANEL ──────────────────────────────────────── */
+#preview-panel {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+#preview-content {
+  flex: 1;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  line-height: 1.7;
+  color: rgba(0,255,0,0.7);
+  white-space: pre-wrap;
+  word-break: break-all;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,255,0,0.2) transparent;
+  padding: 2px 0;
+}
+#preview-content::-webkit-scrollbar { width: 3px; }
+#preview-content::-webkit-scrollbar-thumb { background: rgba(0,255,0,0.2); border-radius: 2px; }
+
+#preview-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+  color: var(--gray-500);
+  text-align: center;
+  gap: 12px;
+}
+#preview-placeholder i { font-size: 2rem; opacity: 0.3; }
+#preview-placeholder p { font-size: 0.72rem; line-height: 1.6; opacity: 0.6; }
+
+/* ── OUTPUT BUTTONS ─────────────────────────────────────── */
+.output-btns { display: flex; gap: 10px; }
+.btn-copy {
+  flex: 2;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 18px;
+  background: rgba(0,255,0,0.08);
+  border: 1px solid rgba(0,255,0,0.3);
+  color: var(--primary);
+  border-radius: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.btn-copy:hover { background: rgba(0,255,0,0.15); border-color: rgba(0,255,0,0.5); box-shadow: var(--primary-glow); transform: translateY(-2px); }
+.btn-copy.copied { background: rgba(0,255,0,0.18); }
+
+.btn-dl {
+  flex: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1px solid var(--primary-border);
+  color: var(--gray-400);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+.btn-dl:hover { border-color: var(--primary-hover); color: var(--primary); background: rgba(0,255,0,0.04); }
+
+/* ── STATS STRIP ────────────────────────────────────────── */
+.stats-strip { display: flex; gap: 10px; flex-wrap: wrap; }
+.stat-pill {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--gray-500);
+  padding: 5px 10px;
+  border: 1px solid rgba(0,255,0,0.1);
+  border-radius: 6px;
+  background: rgba(0,255,0,0.03);
+  letter-spacing: 0.04em;
+}
+.stat-pill i { color: var(--primary); font-size: 0.7rem; }
+.stat-pill span { color: var(--primary); }
+
+/* ── HOW-TO ─────────────────────────────────────────────── */
+#howto {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  line-height: 1.7;
+}
+#howto ol { margin-left: 16px; }
+#howto ol li { margin-bottom: 6px; }
+#howto code {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--primary);
+  background: rgba(0,255,0,0.07);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+#howto a { color: rgba(0,255,0,0.7); text-decoration: none; }
+#howto a:hover { color: var(--primary); text-decoration: underline; }
+#howto-note {
+  margin-top: 1rem;
+  font-size: 0.68rem;
+  color: var(--gray-500);
+  padding: 8px 12px;
+  border: 1px solid rgba(0,255,0,0.1);
+  border-radius: 8px;
+  background: rgba(0,255,0,0.03);
+}
+
+/* ── TOAST ──────────────────────────────────────────────── */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(70px);
+  background: rgba(0,0,0,0.95);
+  border: 1px solid var(--primary-border);
+  color: var(--primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 10px 22px;
+  border-radius: 10px;
+  z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+  backdrop-filter: blur(12px);
+  letter-spacing: 0.04em;
+  box-shadow: 0 0 20px rgba(0,255,0,0.15);
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── FOOTER ─────────────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid rgba(0,255,0,0.1);
+  background: rgba(0,0,0,0.5);
+  padding: 1.5rem;
+  text-align: center;
+}
+.footer-brand { font-family: 'Orbitron', monospace; font-size: 0.8rem; font-weight: 700; }
+.footer-brand .green { color: var(--primary); }
+.footer-brand .dim { color: var(--gray-500); }
+.footer-copy { font-size: 0.65rem; color: var(--gray-500); font-family: 'JetBrains Mono', monospace; margin-top: 5px; letter-spacing: 0.04em; }
+
+/* ── ANIMATIONS ─────────────────────────────────────────── */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(0,255,0,0.15); }
+  50%       { box-shadow: 0 0 22px rgba(0,255,0,0.28); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.step-content { animation: fadeInUp 0.25s ease; }
+
+/* ── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 960px) {
+  #main { grid-template-columns: 1fr; }
+  #wizard-col { max-height: none; overflow-y: visible; }
+  #preview-col { position: static; max-height: none; }
+  #preview-panel { min-height: 420px; }
+  .feature-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .nav-inner { padding: 0 1rem; }
+  .logo-text { font-size: 0.9rem; }
+  .session-badge { display: none; }
+  #theme-grid { grid-template-columns: 1fr; }
+  .output-btns { flex-direction: column; }
+}
+
+/* ── UTILITY ────────────────────────────────────────────── */
+.hidden { display: none !important; }
+.mt8 { margin-top: 8px; }
+.mt4 { margin-top: 4px; }
+
+/* ── PUSH MODAL ─────────────────────────────────────────── */
+#push-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+#push-modal {
+  width: 100%; max-width: 500px;
+  background: rgba(5,5,5,0.98);
+  border: 1px solid rgba(0,255,0,0.25);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 0 60px rgba(0,255,0,0.12);
+  animation: fadeInUp 0.25s ease;
+}
+#push-modal h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+#push-modal .push-sub {
+  font-size: 0.7rem;
+  color: var(--gray-500);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+#push-modal .push-sub a { color: rgba(0,255,0,0.6); text-decoration: none; }
+#push-modal .push-sub a:hover { color: var(--primary); }
+#push-token-input {
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(0,255,0,0.2);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  padding: 10px 14px;
+  outline: none;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  margin-bottom: 0.6rem;
+}
+#push-token-input:focus { border-color: rgba(0,255,0,0.45); box-shadow: 0 0 0 3px rgba(0,255,0,0.06); }
+#push-token-input::placeholder { color: var(--gray-500); }
+.push-note {
+  font-size: 0.64rem;
+  color: var(--gray-500);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.push-note i { color: var(--warn); margin-right: 4px; }
+.push-actions { display: flex; gap: 10px; }
+#btn-push-go {
+  flex: 2;
+  padding: 11px 20px;
+  background: rgba(0,255,0,0.09);
+  border: 1px solid rgba(0,255,0,0.35);
+  color: var(--primary);
+  border-radius: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+#btn-push-go:hover:not(:disabled) { background: rgba(0,255,0,0.16); border-color: rgba(0,255,0,0.55); box-shadow: var(--primary-glow); }
+#btn-push-go:disabled { opacity: 0.5; cursor: not-allowed; }
+#btn-push-cancel {
+  flex: 1;
+  padding: 11px 14px;
+  background: transparent;
+  border: 1px solid var(--primary-border);
+  color: var(--gray-400);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+#btn-push-cancel:hover { border-color: rgba(255,68,68,0.4); color: var(--danger); }
+#push-status {
+  margin-top: 1rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  display: none;
+}
+#push-status.info  { border: 1px solid rgba(0,255,0,0.2);  background: rgba(0,255,0,0.05);  color: var(--primary); }
+#push-status.ok    { border: 1px solid rgba(0,255,0,0.35); background: rgba(0,255,0,0.08);  color: var(--primary); }
+#push-status.err   { border: 1px solid rgba(255,68,68,0.35);background: rgba(255,68,68,0.06);color: var(--danger); }
+
+/* ── PUSH BUTTON ────────────────────────────────────────── */
+.btn-push {
+  flex: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 14px;
+  background: rgba(0,255,0,0.05);
+  border: 1px solid rgba(0,255,0,0.22);
+  color: rgba(0,255,0,0.75);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+.btn-push:hover { border-color: rgba(0,255,0,0.5); color: var(--primary); background: rgba(0,255,0,0.1); box-shadow: var(--primary-glow); }
+</style>
+</head>
+<body>
+
+<div class="neon-bg"></div>
+<div id="toast"></div>
+
+<!-- GITHUB PUSH MODAL -->
+<div id="push-overlay" class="hidden">
+  <div id="push-modal">
+    <h3><i class="fab fa-github" style="margin-right:8px;color:var(--primary);"></i>Push to GitHub</h3>
+    <p class="push-sub">
+      This will write <code style="color:var(--primary);background:rgba(0,255,0,0.07);padding:1px 5px;border-radius:4px;font-size:0.85em;">README.md</code>
+      directly to your special profile repo (<strong style="color:var(--gray-300);">username/username</strong>).<br>
+      Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo&description=README.GEN" target="_blank">Generate one here ↗</a>
+      — only <code style="font-size:0.85em;color:rgba(0,255,0,0.7);">repo</code> scope is needed.
+    </p>
+    <label style="font-size:0.65rem;color:var(--gray-400);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;display:block;">
+      GitHub Personal Access Token
+    </label>
+    <input type="password" id="push-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+    <p class="push-note">
+      <i class="fas fa-shield-alt"></i>
+      Your token is used only for this request and is never stored or sent anywhere except the GitHub API.
+    </p>
+    <div class="push-actions">
+      <button id="btn-push-go" onclick="executePush()">
+        <i class="fas fa-upload"></i> Push README
+      </button>
+      <button id="btn-push-cancel" onclick="closePushModal()">Cancel</button>
+    </div>
+    <div id="push-status"></div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-terminal" style="color:var(--primary);font-size:0.95rem;"></i>
+        </div>
+        <div>
+          <div class="logo-text"><span class="logo-wolf">README</span><span class="logo-bot">.GEN</span></div>
+          <div class="logo-sub">GitHub Profile Generator</div>
+        </div>
+      </div>
+
+      <div class="session-badge">
+        <div class="session-dot"></div>
+        SESSION: <span id="session-id">—</span>
+      </div>
+
+      <div class="nav-actions">
+        <button class="nav-btn" onclick="showHowTo()">
+          <i class="fas fa-question-circle"></i> How-To
+        </button>
+        <button class="nav-btn danger" onclick="resetAll()">
+          <i class="fas fa-trash-alt"></i> Reset
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- LEFT -->
+    <div id="wizard-col">
+
+      <!-- Step Indicator Card -->
+      <div class="card">
+        <div class="step-indicator-wrap">
+          <div id="step-indicator"></div>
+        </div>
+      </div>
+
+      <!-- Wizard Content -->
+      <div class="card" id="wizard-card">
+        <div id="step-content"></div>
+      </div>
+
+      <!-- How-To -->
+      <div class="card hidden" id="howto-card">
+        <div class="card-header">
+          <div class="card-header-icon"><i class="fas fa-info-circle"></i></div>
+          <h2>Deploy Your README</h2>
+          <button onclick="document.getElementById('howto-card').classList.add('hidden')"
+            style="margin-left:auto;background:none;border:none;color:var(--gray-500);cursor:pointer;font-size:1.1rem;line-height:1;">×</button>
+        </div>
+        <div id="howto">
+          <ol>
+            <li>Go to <a href="https://github.com/new" target="_blank">github.com/new</a></li>
+            <li>Create a repo named exactly <code>YOUR_USERNAME</code></li>
+            <li>Check <strong style="color:var(--gray-300)">Add a README file</strong> → <strong style="color:var(--gray-300)">Create repository</strong></li>
+            <li>Click the pencil ✏️ icon to edit the file</li>
+            <li>Select all (<code>Ctrl+A</code>), delete, paste your README</li>
+            <li>Click <strong style="color:var(--gray-300)">Commit changes</strong> — done! 🎉</li>
+          </ol>
+          <div id="howto-note">💡 The repo must be <strong style="color:var(--gray-300)">public</strong> and named exactly as your username.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div id="preview-col">
+
+      <!-- Preview Header -->
+      <div class="card" style="padding: 0.75rem 1.5rem; flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="card-header-icon" style="width:30px;height:30px;border-radius:7px;flex-shrink:0;animation:glowPulse 4s ease-in-out infinite;">
+            <i class="fas fa-eye" style="font-size:0.75rem;color:var(--primary);"></i>
+          </div>
+          <span style="font-family:'Orbitron',monospace;font-weight:700;font-size:0.72rem;color:var(--white);letter-spacing:0.12em;text-transform:uppercase;">Live Preview</span>
+          <!-- Tab switcher -->
+          <div style="margin-left:auto;display:flex;gap:6px;">
+            <button id="tab-visual" onclick="switchTab('visual')"
+              style="padding:3px 12px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;cursor:pointer;transition:all .2s;border:1px solid rgba(0,255,0,0.4);background:rgba(0,255,0,0.1);color:var(--primary);letter-spacing:.04em;">
+              Visual
+            </button>
+            <button id="tab-raw" onclick="switchTab('raw')"
+              style="padding:3px 12px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;cursor:pointer;transition:all .2s;border:1px solid rgba(0,255,0,0.15);background:transparent;color:var(--gray-500);letter-spacing:.04em;">
+              Raw MD
+            </button>
+            <div id="line-count" style="padding:3px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--gray-500);border:1px solid rgba(0,255,0,0.1);">0 lines</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview Content -->
+      <div class="card" id="preview-panel" style="padding:0;overflow:hidden;min-height:500px;">
+        <div id="preview-placeholder" style="padding:1.5rem;">
+          <i class="fas fa-eye" style="font-size:2rem;opacity:0.2;color:var(--primary);"></i>
+          <p style="font-size:0.72rem;color:var(--gray-500);line-height:1.6;margin-top:10px;">Fill in your info<br>to see the live preview</p>
+        </div>
+        <!-- Visual preview iframe -->
+        <iframe id="preview-visual" class="hidden"
+          style="width:100%;height:100%;border:none;border-radius:0;background:#0d1117;min-height:500px;"
+          sandbox="allow-same-origin allow-scripts"></iframe>
+        <!-- Raw markdown -->
+        <pre id="preview-content" class="hidden"
+          style="padding:1rem 1.25rem;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.68rem;line-height:1.7;color:rgba(0,255,0,0.65);white-space:pre-wrap;word-break:break-all;overflow-y:auto;max-height:600px;scrollbar-width:thin;scrollbar-color:rgba(0,255,0,0.2) transparent;"></pre>
+      </div>
+
+      <!-- Output Buttons -->
+      <div class="card" style="padding:1rem 1.5rem;">
+        <div class="output-btns">
+          <button class="btn-copy" id="copy-btn" onclick="copyReadme()">
+            <i class="fas fa-copy"></i> Copy README.md
+          </button>
+          <button class="btn-dl" onclick="downloadReadme()">
+            <i class="fas fa-download"></i> Download
+          </button>
+          <button class="btn-push" onclick="openPushModal()" title="Push directly to GitHub profile repo">
+            <i class="fab fa-github"></i> Push
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="card" style="padding:0.75rem 1.5rem;">
+        <div class="stats-strip">
+          <div class="stat-pill"><i class="fas fa-user"></i> <span id="stat-user">—</span></div>
+          <div class="stat-pill"><i class="fas fa-code"></i> Skills: <span id="stat-skills">0</span></div>
+          <div class="stat-pill"><i class="fas fa-palette"></i> <span id="stat-theme">Cyberpunk</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand"><span class="green">README</span><span class="dim">.GEN</span></div>
+    <div class="footer-copy">© 2026 WOLF TECH — GitHub Profile Generator</div>
+  </footer>
+
+</div><!-- /app -->
+
+<script>
+/* ============================================================
+   STATE
+   ============================================================ */
+const STATE = {
+  step: 1, totalSteps: 5,
+  name: '', username: '', role: '', location: '', bio: '',
+  socials: {
+    website:  { enabled: false, value: '' },
+    twitter:  { enabled: false, value: '' },
+    linkedin: { enabled: false, value: '' },
+    youtube:  { enabled: false, value: '' },
+    telegram: { enabled: false, value: '' },
+    whatsapp: { enabled: false, value: '' }
+  },
+  skills: [], customSkills: [],
+  theme: 0,
+  headerType: 'typing',
+  headerText: '',
+  features: {
+    stats: false, streak: false, topLangs: false,
+    activityGraph: false, profileViews: false,
+    trophies: false, workWithMe: false
+  },
+  repos: ['', '', '', '']
+};
+
+const PREDEFINED_SKILLS = [
+  'JavaScript','TypeScript','Python','Node.js','React','Vue','Angular',
+  'Express','Django','Flask','PostgreSQL','MongoDB','MySQL',
+  'Docker','AWS','Git','Tailwind CSS','Next.js','WhatsApp API','Baileys',
+  'Rust','Go','PHP','Laravel','Redis','GraphQL','Linux','Solidity'
+];
+
+const THEMES = [
+  { name:'Cyberpunk Neon',  statsTheme:'chartreuse-dark', color:'#00ff00', swatches:['#00ff00','#00aa00','#111'],    desc:'Matrix green glow' },
+  { name:'Radical Purple',  statsTheme:'radical',         color:'#bf5fff', swatches:['#bf5fff','#00d9ff','#1a0030'], desc:'Vivid purple & cyan' },
+  { name:'Minimal Dark',    statsTheme:'dark',            color:'#e0e0e0', swatches:['#e0e0e0','#888','#1a1a1a'],    desc:'Clean monochrome' },
+  { name:'Ocean Blue',      statsTheme:'algolia',         color:'#00aaff', swatches:['#00aaff','#00ffee','#001830'], desc:'Deep sea blues' },
+  { name:'Sunset Fire',     statsTheme:'sunset-gradient', color:'#ff6b35', swatches:['#ff6b35','#ffaa00','#1a0800'], desc:'Warm orange flames' },
+  { name:'Hacker Red',      statsTheme:'blood',           color:'#ff3333', swatches:['#ff3333','#aa0000','#1a0000'], desc:'Blood red terminal' },
+  { name:'Rose Bloom',      statsTheme:'dracula',         color:'#ff79c6', swatches:['#ff79c6','#bd93f9','#1a0020'], desc:'Dracula pink & violet' },
+  { name:'Tokyo Night',     statsTheme:'tokyonight',      color:'#7dcfff', swatches:['#7dcfff','#bb9af7','#0d0f1a'], desc:'Neon city skyline' },
+  { name:'Nord Ice',        statsTheme:'nord',            color:'#88c0d0', swatches:['#88c0d0','#81a1c1','#1e2330'], desc:'Arctic cool tones' },
+  { name:'Golden Matrix',   statsTheme:'gruvbox',         color:'#ffd700', swatches:['#ffd700','#d79921','#1a1200'], desc:'Gold on dark retro' }
+];
+
+const SOCIAL_META = {
+  website:  { icon:'fas fa-globe',      label:'Website',    placeholder:'https://yoursite.com' },
+  twitter:  { icon:'fab fa-twitter',    label:'Twitter/X',  placeholder:'@username or URL' },
+  linkedin: { icon:'fab fa-linkedin',   label:'LinkedIn',   placeholder:'linkedin.com/in/user' },
+  youtube:  { icon:'fab fa-youtube',    label:'YouTube',    placeholder:'youtube.com/@channel' },
+  telegram: { icon:'fab fa-telegram',   label:'Telegram',   placeholder:'@username' },
+  whatsapp: { icon:'fab fa-whatsapp',   label:'WhatsApp',   placeholder:'+1234567890' }
+};
+
+/* ============================================================
+   STORAGE
+   ============================================================ */
+function saveState() {
+  try { localStorage.setItem('rmg_state', JSON.stringify(STATE)); } catch(e) {}
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem('rmg_state');
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    ['name','username','role','location','bio','socials','skills',
+     'customSkills','theme','headerType','headerText','features','repos'
+    ].forEach(k => { if (s[k] !== undefined) STATE[k] = s[k]; });
+  } catch(e) {}
+}
+function resetAll() {
+  if (!confirm('Reset all data? This cannot be undone.')) return;
+  localStorage.removeItem('rmg_state');
+  location.reload();
+}
+
+/* ============================================================
+   SESSION
+   ============================================================ */
+function initSession() {
+  let sid = localStorage.getItem('rmg_session');
+  if (!sid) {
+    sid = 'SID-' + Math.random().toString(36).substr(2,5).toUpperCase()
+        + '-' + Date.now().toString(36).toUpperCase().substr(-4);
+    localStorage.setItem('rmg_session', sid);
+  }
+  document.getElementById('session-id').textContent = sid;
+}
+
+/* ============================================================
+   STEP INDICATOR
+   ============================================================ */
+const STEP_LABELS = ['Basic','Socials','Skills','Theme','Features'];
+
+function renderStepIndicator() {
+  const el = document.getElementById('step-indicator');
+  let html = '';
+  for (let i = 1; i <= STATE.totalSteps; i++) {
+    const done   = i < STATE.step;
+    const active = i === STATE.step;
+    html += `<div class="step-item">
+      <div class="step-circle ${done?'done':active?'active':''}">${done?'✓':i}</div>
+      <span class="step-label ${done?'done':active?'active':''}">${STEP_LABELS[i-1]}</span>
+      ${i < STATE.totalSteps ? `<div class="step-line ${done?'done':''}"></div>` : ''}
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
+/* ============================================================
+   STEPS
+   ============================================================ */
+function renderStep(n) {
+  renderStepIndicator();
+  const c = document.getElementById('step-content');
+  c.className = 'step-content';
+  const fn = [null, step1, step2, step3, step4, step5][n];
+  fn(c);
+  updatePreview();
+}
+
+/* STEP 1 */
+function step1(c) {
+  c.innerHTML = `
+    <div class="card-header">
+      <div class="card-header-icon"><i class="fas fa-user"></i></div>
+      <h2>Basic Info</h2>
+      <div class="step-badge">1 / 5</div>
+    </div>
+
+    <div class="form-group">
+      <label>Full Name <span class="hint">optional</span></label>
+      <input type="text" placeholder="Silent Wolf" maxlength="80" value="${esc(STATE.name)}"
+        oninput="STATE.name=this.value;saveState();updatePreview();">
+    </div>
+    <div class="form-group">
+      <label>GitHub Username <span class="req">*</span></label>
+      <input type="text" id="f-username" placeholder="WOLFTECH-254" maxlength="40" value="${esc(STATE.username)}"
+        oninput="STATE.username=this.value.trim();saveState();updatePreview();updateStats();">
+    </div>
+    <div class="form-group">
+      <label>Profile Title / Role</label>
+      <input type="text" placeholder="Full-Stack Developer | WhatsApp Bot Engineer" maxlength="100" value="${esc(STATE.role)}"
+        oninput="STATE.role=this.value;saveState();updatePreview();">
+    </div>
+    <div class="form-group">
+      <label>Location</label>
+      <input type="text" placeholder="Nairobi, Kenya 🇰🇪" maxlength="60" value="${esc(STATE.location)}"
+        oninput="STATE.location=this.value;saveState();updatePreview();">
+    </div>
+    <div class="form-group">
+      <label>Short Bio <span class="hint">max 200 chars</span></label>
+      <textarea placeholder="Building next-gen WhatsApp bots and automation tools. Open source enthusiast from Nairobi. 🐺" maxlength="200"
+        oninput="STATE.bio=this.value;saveState();updatePreview();charCount(this,'bio-cc');">${esc(STATE.bio)}</textarea>
+      <div class="char-count" id="bio-cc">${STATE.bio.length}/200</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-next" onclick="nextStep()">
+        Next: Social Links <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>`;
+}
+
+/* STEP 2 */
+function step2(c) {
+  const rows = Object.entries(SOCIAL_META).map(([key, meta]) => {
+    const s = STATE.socials[key];
+    return `
+    <div class="toggle-row ${s.enabled?'active':''}" id="tr-${key}">
+      <i class="${meta.icon} tr-icon"></i>
+      <span class="tr-label">${meta.label}</span>
+      ${s.enabled ? `<div class="tr-input"><input type="text" placeholder="${meta.placeholder}"
+        value="${esc(s.value)}"
+        oninput="STATE.socials['${key}'].value=this.value;saveState();updatePreview();"
+        onclick="event.stopPropagation();"></div>` : ''}
+      <div class="toggle-switch ${s.enabled?'on':''}" onclick="toggleSocial('${key}',event)"></div>
+    </div>`;
+  }).join('');
+
+  c.innerHTML = `
+    <div class="card-header">
+      <div class="card-header-icon"><i class="fas fa-share-alt"></i></div>
+      <h2>Social Links</h2>
+      <div class="step-badge">2 / 5</div>
+    </div>
+    <p style="font-size:0.7rem;color:var(--gray-500);margin-bottom:1rem;letter-spacing:0.04em;">Toggle platforms to include in your profile.</p>
+    ${rows}
+    <div class="nav-row">
+      <button class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn-next" onclick="nextStep()">Next: Tech Stack <i class="fas fa-arrow-right"></i></button>
+    </div>`;
+}
+
+function toggleSocial(key, e) {
+  e.stopPropagation();
+  STATE.socials[key].enabled = !STATE.socials[key].enabled;
+  saveState();
+  renderStep(STATE.step);
+}
+
+/* STEP 3 */
+function step3(c) {
+  const pre = PREDEFINED_SKILLS.map(s =>
+    `<span class="skill-tag ${STATE.skills.includes(s)?'selected':''}" onclick="toggleSkill('${s}',this)">${s}</span>`
+  ).join('');
+  const custom = STATE.customSkills.map((s,i) =>
+    `<span class="skill-tag custom-tag selected" onclick="removeCustom(${i})">${s} <span class="remove">✕</span></span>`
+  ).join('');
+
+  c.innerHTML = `
+    <div class="card-header">
+      <div class="card-header-icon"><i class="fas fa-layer-group"></i></div>
+      <h2>Tech Stack</h2>
+      <div class="step-badge">3 / 5</div>
+    </div>
+    <p style="font-size:0.7rem;color:var(--gray-500);margin-bottom:0.75rem;letter-spacing:0.04em;">
+      Click to select. Selected: <span style="color:var(--primary);" id="sel-cnt">${STATE.skills.length+STATE.customSkills.length}</span>
+    </p>
+    <div id="skill-cloud">${pre}${custom}</div>
+    <div class="divider"></div>
+    <label>Add Custom Skill</label>
+    <div id="custom-skill-row" class="mt4">
+      <input type="text" id="csi" placeholder="e.g. Solidity, WASM…" maxlength="30"
+        onkeydown="if(event.key==='Enter')addCustom();">
+      <button class="add-btn" onclick="addCustom()"><i class="fas fa-plus"></i> Add</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn-next" onclick="nextStep()">Next: Theme <i class="fas fa-arrow-right"></i></button>
+    </div>`;
+}
+
+function toggleSkill(name, el) {
+  const i = STATE.skills.indexOf(name);
+  if (i === -1) { STATE.skills.push(name); el.classList.add('selected'); }
+  else          { STATE.skills.splice(i,1);  el.classList.remove('selected'); }
+  const cnt = document.getElementById('sel-cnt');
+  if (cnt) cnt.textContent = STATE.skills.length + STATE.customSkills.length;
+  saveState(); updatePreview();
+}
+function addCustom() {
+  const inp = document.getElementById('csi');
+  const v = (inp.value||'').trim();
+  if (!v || v.length < 2 || STATE.customSkills.includes(v) || STATE.skills.includes(v)) { inp.value=''; return; }
+  STATE.customSkills.push(v);
+  saveState(); renderStep(STATE.step);
+}
+function removeCustom(i) {
+  STATE.customSkills.splice(i,1);
+  saveState(); renderStep(STATE.step);
+}
+
+/* STEP 4 */
+function step4(c) {
+  const cards = THEMES.map((t,i) => `
+    <div class="theme-card ${STATE.theme===i?'selected':''}" data-t="${i}" onclick="selectTheme(${i})">
+      <div class="theme-check"><i class="fas fa-check" style="font-size:0.6rem;"></i></div>
+      <div class="t-name">${t.name}</div>
+      <div class="t-desc">${t.desc||t.statsTheme}</div>
+      <div class="t-preview">
+        ${t.swatches.map(s=>`<div class="t-swatch" style="background:${s}"></div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  c.innerHTML = `
+    <div class="card-header">
+      <div class="card-header-icon"><i class="fas fa-palette"></i></div>
+      <h2>Style & Theme</h2>
+      <div class="step-badge">4 / 5</div>
+    </div>
+    <div id="theme-grid">${cards}</div>
+    <div class="divider"></div>
+    <label style="margin-bottom:0.75rem;">Header Animation</label>
+    <div class="header-type-row">
+      <button class="htype-btn ${STATE.headerType==='typing'?'active':''}" onclick="setHeader('typing',this)">
+        <i class="fas fa-keyboard"></i> Typing SVG
+      </button>
+      <button class="htype-btn ${STATE.headerType==='capsule'?'active':''}" onclick="setHeader('capsule',this)">
+        <i class="fas fa-wave-square"></i> Wave Banner
+      </button>
+    </div>
+    <div class="form-group">
+      <label>Header Tagline</label>
+      <input type="text" placeholder="I build cool things with code…" maxlength="80"
+        value="${esc(STATE.headerText)}"
+        oninput="STATE.headerText=this.value;saveState();updatePreview();">
+    </div>
+    <div class="nav-row">
+      <button class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn-next" onclick="nextStep()">Next: Features <i class="fas fa-arrow-right"></i></button>
+    </div>`;
+}
+
+function selectTheme(i) { STATE.theme=i; saveState(); renderStep(STATE.step); updateStats(); }
+function setHeader(type, btn) {
+  STATE.headerType = type;
+  document.querySelectorAll('.htype-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  saveState(); updatePreview();
+}
+
+/* STEP 5 */
+function step5(c) {
+  const fl = [
+    { key:'stats',         icon:'fas fa-chart-bar',  label:'GitHub Stats Cards' },
+    { key:'streak',        icon:'fas fa-fire',        label:'Streak Stats' },
+    { key:'topLangs',      icon:'fas fa-code',        label:'Top Languages' },
+    { key:'activityGraph', icon:'fas fa-wave-square', label:'Activity Graph' },
+    { key:'profileViews',  icon:'fas fa-eye',         label:'Profile Views Counter' },
+    { key:'trophies',      icon:'fas fa-trophy',      label:'GitHub Trophies' },
+    { key:'workWithMe',    icon:'fas fa-handshake',   label:'"Work With Me" Section' }
+  ];
+  const items = fl.map(f => `
+    <div class="feature-item ${STATE.features[f.key]?'on':''}" onclick="toggleFeature('${f.key}',this)">
+      <i class="${f.icon} f-icon"></i>
+      <span class="f-label">${f.label}</span>
+      <div class="f-check">${STATE.features[f.key]?'✓':''}</div>
+    </div>`).join('');
+
+  const repoRows = [0,1,2,3].map(i => `
+    <div class="repo-row">
+      <span class="repo-num">${i+1}.</span>
+      <input type="text" placeholder="username/repo-name" maxlength="60"
+        value="${esc(STATE.repos[i])}"
+        oninput="STATE.repos[${i}]=this.value;saveState();updatePreview();">
+    </div>`).join('');
+
+  c.innerHTML = `
+    <div class="card-header">
+      <div class="card-header-icon"><i class="fas fa-sliders-h"></i></div>
+      <h2>Features</h2>
+      <div class="step-badge">5 / 5</div>
+    </div>
+    <div class="feature-grid">${items}</div>
+    <div class="repo-list">
+      <div class="divider"></div>
+      <label>Featured Repos <span class="hint">optional — leave blank to skip</span></label>
+      <div class="mt4">${repoRows}</div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn-next" onclick="updatePreview();showToast('README generated! 🎉')">
+        <i class="fas fa-magic"></i> Generate README
+      </button>
+    </div>`;
+}
+
+function toggleFeature(key, el) {
+  STATE.features[key] = !STATE.features[key];
+  el.classList.toggle('on');
+  el.querySelector('.f-check').textContent = STATE.features[key] ? '✓' : '';
+  saveState(); updatePreview();
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function nextStep() {
+  if (STATE.step === 1 && !STATE.username.trim()) {
+    const el = document.getElementById('f-username');
+    if (el) {
+      el.style.borderColor = 'rgba(255,68,68,0.6)';
+      el.style.boxShadow = '0 0 0 3px rgba(255,68,68,0.1)';
+      el.focus();
+      setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; }, 2000);
+    }
+    showToast('GitHub username is required!', true);
+    return;
+  }
+  if (STATE.step < STATE.totalSteps) {
+    STATE.step++;
+    saveState();
+    renderStep(STATE.step);
+    document.getElementById('wizard-col').scrollTop = 0;
+  }
+}
+function prevStep() {
+  if (STATE.step > 1) {
+    STATE.step--;
+    saveState();
+    renderStep(STATE.step);
+    document.getElementById('wizard-col').scrollTop = 0;
+  }
+}
+
+/* ============================================================
+   README GENERATOR
+   ============================================================ */
+function generateReadme() {
+  const u = STATE.username.trim() || 'WOLFTECH-254';
+  const n = STATE.name || 'Silent Wolf';
+  const theme = THEMES[STATE.theme];
+  const st = theme.statsTheme;
+  const pc = theme.color.replace('#','');
+  const headerText = STATE.headerText || `Hey there! I'm ${n} 👋`;
+  let md = '';
+
+  // Header
+  if (STATE.headerType === 'capsule') {
+    md += `<div align="center">\n  <img src="https://capsule-render.vercel.app/api?type=waving&color=${pc}&height=200&section=header&text=${encodeURIComponent(headerText)}&fontColor=000000&fontSize=38&animation=fadeIn" />\n</div>\n\n`;
+  } else {
+    md += `<div align="center">\n  <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=26&duration=3000&pause=1000&color=${pc}&center=true&vCenter=true&width=600&lines=${encodeURIComponent(headerText)};${encodeURIComponent(STATE.role||'Building awesome things 🚀')}" alt="Typing SVG" />\n</div>\n\n`;
+  }
+
+  // Profile views badge row
+  if (STATE.features.profileViews) {
+    md += `<div align="center">\n\n`;
+    md += `![Profile Views](https://komarev.com/ghpvc/?username=${u}&color=${pc}&style=flat-square&label=PROFILE+VIEWS)\n`;
+    md += `![Followers](https://img.shields.io/github/followers/${u}?style=flat-square&color=${pc}&labelColor=000000)\n`;
+    md += `![Stars](https://img.shields.io/github/stars/${u}?style=flat-square&color=${pc}&labelColor=000000)\n\n</div>\n\n`;
+  }
+
+  // About
+  md += `## 👾 About Me\n\n`;
+  if (STATE.bio) md += `> ${STATE.bio}\n\n`;
+  if (STATE.name)     md += `- 🔷 **Name:** ${STATE.name}\n`;
+  if (STATE.role)     md += `- 💼 **Role:** ${STATE.role}\n`;
+  if (STATE.location) md += `- 📍 **Location:** ${STATE.location}\n`;
+  md += `- 🐙 **GitHub:** [@${u}](https://github.com/${u})\n\n`;
+
+  // Featured repos
+  const repos = STATE.repos.filter(r => r.trim());
+  if (repos.length > 0) {
+    md += `## 🚀 Featured Projects\n\n`;
+    repos.forEach(repo => {
+      const full = repo.includes('/') ? repo : `${u}/${repo}`;
+      const repoName = full.split('/')[1];
+      md += `[![${full}](https://github-readme-stats.vercel.app/api/pin/?username=${u}&repo=${repoName}&theme=${st})](https://github.com/${full})\n`;
+    });
+    md += '\n';
+  }
+
+  // Tech stack
+  const allSkills = [...STATE.skills, ...STATE.customSkills];
+  if (allSkills.length > 0) {
+    md += `## 🛠️ Tech Stack\n\n<div align="center">\n\n`;
+    const logoMap = {
+      'javascript':'javascript','typescript':'typescript','python':'python','node.js':'node.js',
+      'react':'react','vue':'vue.js','angular':'angular','express':'express','django':'django',
+      'flask':'flask','postgresql':'postgresql','mongodb':'mongodb','mysql':'mysql',
+      'docker':'docker','aws':'amazon-aws','git':'git','tailwind css':'tailwind-css',
+      'next.js':'next.js','rust':'rust','go':'go','php':'php','laravel':'laravel',
+      'redis':'redis','graphql':'graphql','linux':'linux','solidity':'solidity'
+    };
+    allSkills.forEach(s => {
+      const logo = logoMap[s.toLowerCase()] || s.toLowerCase().replace(/\s+/g,'-');
+      md += `![${s}](https://img.shields.io/badge/${encodeURIComponent(s)}-000000?style=flat-square&logo=${logo}&logoColor=%23${pc})\n`;
+    });
+    md += `\n</div>\n\n`;
+  }
+
+  // Stats
+  if (STATE.features.stats || STATE.features.streak || STATE.features.topLangs) {
+    md += `## 📊 GitHub Stats\n\n<div align="center">\n\n`;
+    if (STATE.features.stats)
+      md += `![Stats](https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&bg_color=00000000)\n\n`;
+    if (STATE.features.streak)
+      md += `![Streak](https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true&background=00000000)\n\n`;
+    if (STATE.features.topLangs)
+      md += `![Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true&bg_color=00000000)\n\n`;
+    md += `</div>\n\n`;
+  }
+
+  // Activity graph
+  if (STATE.features.activityGraph) {
+    md += `## 📈 Activity Graph\n\n<div align="center">\n\n`;
+    md += `[![Activity](https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true&bg_color=00000000)](https://github.com/${u})\n\n`;
+    md += `</div>\n\n`;
+  }
+
+  // Trophies
+  if (STATE.features.trophies) {
+    md += `## 🏆 Trophies\n\n<div align="center">\n\n`;
+    md += `[![Trophies](https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&margin-w=10)](https://github.com/${u})\n\n`;
+    md += `</div>\n\n`;
+  }
+
+  // Work with me
+  if (STATE.features.workWithMe) {
+    md += `## 🤝 Work With Me\n\n`;
+    md += `I'm open to collaborations, freelance projects, and interesting opportunities.\n\n`;
+    md += `> 💬 Feel free to reach out — let's build something amazing together!\n\n`;
+    const site = STATE.socials.website.enabled && STATE.socials.website.value ? STATE.socials.website.value : 'yoursite.com';
+    md += `- 📧 **Email:** your.email@example.com\n- 🌐 **Portfolio:** ${site}\n\n`;
+  }
+
+  // Socials
+  const enabled = Object.entries(STATE.socials).filter(([,v]) => v.enabled && v.value);
+  if (enabled.length > 0) {
+    const logoMap2 = { website:'google-chrome', twitter:'twitter', linkedin:'linkedin', youtube:'youtube', telegram:'telegram', whatsapp:'whatsapp' };
+    md += `## 🌐 Connect\n\n<div align="center">\n\n`;
+    enabled.forEach(([key, s]) => {
+      const meta = SOCIAL_META[key];
+      md += `[![${meta.label}](https://img.shields.io/badge/${encodeURIComponent(meta.label)}-000000?style=for-the-badge&logo=${logoMap2[key]}&logoColor=%23${pc})](${s.value})\n`;
+    });
+    md += `\n</div>\n\n`;
+  }
+
+  // Footer
+  md += `---\n\n<div align="center">\n\n*Generated with README.GEN ⚡ — WOLF TECH Edition*\n\n</div>\n`;
+  return md;
+}
+
+/* ============================================================
+   PREVIEW — TAB SWITCHER
+   ============================================================ */
+let currentTab = 'visual';
+
+function switchTab(tab) {
+  currentTab = tab;
+  const vBtn  = document.getElementById('tab-visual');
+  const rBtn  = document.getElementById('tab-raw');
+  const vFrame= document.getElementById('preview-visual');
+  const rPre  = document.getElementById('preview-content');
+  const ph    = document.getElementById('preview-placeholder');
+
+  const activeStyle   = 'border:1px solid rgba(0,255,0,0.4);background:rgba(0,255,0,0.1);color:var(--primary);';
+  const inactiveStyle = 'border:1px solid rgba(0,255,0,0.15);background:transparent;color:var(--gray-500);';
+
+  ph.classList.add('hidden');
+
+  if (tab === 'visual') {
+    vBtn.style.cssText  += activeStyle;
+    rBtn.style.cssText  += inactiveStyle;
+    vFrame.classList.remove('hidden');
+    rPre.classList.add('hidden');
+  } else {
+    rBtn.style.cssText  += activeStyle;
+    vBtn.style.cssText  += inactiveStyle;
+    rPre.classList.remove('hidden');
+    vFrame.classList.add('hidden');
+  }
+
+  // re-apply button styles cleanly
+  vBtn.style.cssText = `padding:3px 12px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;cursor:pointer;transition:all .2s;letter-spacing:.04em;${tab==='visual' ? activeStyle : inactiveStyle}`;
+  rBtn.style.cssText = `padding:3px 12px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;cursor:pointer;transition:all .2s;letter-spacing:.04em;${tab==='raw'    ? activeStyle : inactiveStyle}`;
+}
+
+/* ============================================================
+   VISUAL PREVIEW HTML BUILDER
+   ============================================================ */
+function buildVisualPreview() {
+  const u  = STATE.username.trim() || 'WOLFTECH-254';
+  const n  = STATE.name          || 'Silent Wolf';
+  const theme   = THEMES[STATE.theme];
+  const st      = theme.statsTheme;
+  const pc      = theme.color;          // full hex e.g. #00ff00
+  const pcRaw   = pc.replace('#','');   // no hash
+  const bg      = theme.swatches[2];    // darkest bg swatch
+  const accent  = theme.swatches[1];
+
+  const headerText = STATE.headerText || `Hey there! I'm ${n} 👋`;
+  const allSkills  = [...STATE.skills, ...STATE.customSkills];
+
+  const logoMap = {
+    'javascript':'javascript','typescript':'typescript','python':'python','node.js':'node.js',
+    'react':'react','vue':'vue.js','angular':'angular','express':'express','django':'django',
+    'flask':'flask','postgresql':'postgresql','mongodb':'mongodb','mysql':'mysql',
+    'docker':'docker','aws':'amazon-aws','git':'git','tailwind css':'tailwind-css',
+    'next.js':'next.js','rust':'rust','go':'go','php':'php','laravel':'laravel',
+    'redis':'redis','graphql':'graphql','linux':'linux','solidity':'solidity',
+    'whatsapp api':'whatsapp','baileys':'node.js'
+  };
+
+  // ── Typing SVG / Capsule header ──────────────────────────
+  let headerHTML = '';
+  if (STATE.headerType === 'capsule') {
+    const src = `https://capsule-render.vercel.app/api?type=waving&color=${pcRaw}&height=160&section=header&text=${encodeURIComponent(headerText)}&fontColor=000000&fontSize=30&animation=fadeIn`;
+    headerHTML = `<div style="text-align:center;margin-bottom:16px;"><img src="${src}" style="width:100%;max-width:600px;" onerror="this.style.display='none'"></div>`;
+  } else {
+    const src = `https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=22&duration=3000&pause=1000&color=${pcRaw}&center=true&vCenter=true&width=540&lines=${encodeURIComponent(headerText)};${encodeURIComponent(STATE.role||'Building awesome things 🚀')}`;
+    headerHTML = `<div style="text-align:center;margin-bottom:16px;"><img src="${src}" style="max-width:100%;" onerror="this.outerHTML='<h2 style=color:${pc};font-family:monospace;text-align:center;padding:18px 0;font-size:1.1rem;'>${headerText}</h2>'"></div>`;
+  }
+
+  // ── Profile views badges ─────────────────────────────────
+  let pvHTML = '';
+  if (STATE.features.profileViews) {
+    pvHTML = `<div style="text-align:center;margin-bottom:14px;">
+      <img src="https://komarev.com/ghpvc/?username=${u}&color=${pcRaw}&style=flat-square&label=PROFILE+VIEWS" style="margin:2px;">
+      <img src="https://img.shields.io/github/followers/${u}?style=flat-square&color=${pcRaw}&labelColor=000000" style="margin:2px;">
+      <img src="https://img.shields.io/github/stars/${u}?style=flat-square&color=${pcRaw}&labelColor=000000" style="margin:2px;">
+    </div>`;
+  }
+
+  // ── About section ────────────────────────────────────────
+  let aboutRows = '';
+  if (STATE.name)     aboutRows += `<div style="margin:4px 0;">🔷 <b>Name:</b> ${STATE.name}</div>`;
+  if (STATE.role)     aboutRows += `<div style="margin:4px 0;">💼 <b>Role:</b> ${STATE.role}</div>`;
+  if (STATE.location) aboutRows += `<div style="margin:4px 0;">📍 <b>Location:</b> ${STATE.location}</div>`;
+  aboutRows += `<div style="margin:4px 0;">🐙 <b>GitHub:</b> <a href="https://github.com/${u}" style="color:${pc};text-decoration:none;">@${u}</a></div>`;
+  const bioHTML = STATE.bio ? `<div style="border-left:3px solid ${pc};padding:8px 14px;background:rgba(255,255,255,0.04);border-radius:0 6px 6px 0;margin-bottom:10px;font-style:italic;color:#ccc;">${STATE.bio}</div>` : '';
+
+  // ── Skill badges ─────────────────────────────────────────
+  let skillsHTML = '';
+  if (allSkills.length > 0) {
+    const badges = allSkills.map(s => {
+      const logo = logoMap[s.toLowerCase()] || s.toLowerCase().replace(/\s+/g,'-');
+      const src  = `https://img.shields.io/badge/${encodeURIComponent(s)}-000000?style=flat-square&logo=${logo}&logoColor=%23${pcRaw}`;
+      return `<img src="${src}" style="margin:3px;" onerror="this.outerHTML='<span style=display:inline-block;padding:3px 10px;background:#111;border:1px solid ${pc};border-radius:4px;font-size:11px;color:${pc};margin:3px;font-family:monospace;>${s}</span>'">`;
+    }).join('');
+    skillsHTML = `
+      <div class="pv-section">
+        <div class="pv-heading">🛠️ Tech Stack</div>
+        <div style="text-align:center;padding:4px 0;">${badges}</div>
+      </div>`;
+  }
+
+  // ── Featured repos ───────────────────────────────────────
+  const repos = STATE.repos.filter(r => r.trim());
+  let reposHTML = '';
+  if (repos.length > 0) {
+    const cards = repos.map(repo => {
+      const full = repo.includes('/') ? repo : `${u}/${repo}`;
+      const rn   = full.split('/')[1];
+      return `<img src="https://github-readme-stats.vercel.app/api/pin/?username=${u}&repo=${rn}&theme=${st}" style="margin:4px;max-width:48%;" onerror="this.outerHTML='<div style=display:inline-block;border:1px solid ${pc};padding:8px 12px;border-radius:6px;font-size:11px;color:${pc};margin:4px;font-family:monospace;>📦 ${rn}</div>'">`;
+    }).join('');
+    reposHTML = `
+      <div class="pv-section">
+        <div class="pv-heading">🚀 Featured Projects</div>
+        <div style="text-align:center;">${cards}</div>
+      </div>`;
+  }
+
+  // ── Stats ─────────────────────────────────────────────────
+  let statsHTML = '';
+  if (STATE.features.stats || STATE.features.streak || STATE.features.topLangs) {
+    let imgs = '';
+    if (STATE.features.stats)
+      imgs += `<img src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&bg_color=00000000" style="margin:4px;max-width:48%;" onerror="this.style.opacity=0.3">`;
+    if (STATE.features.streak)
+      imgs += `<img src="https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true&background=00000000" style="margin:4px;max-width:48%;" onerror="this.style.opacity=0.3">`;
+    if (STATE.features.topLangs)
+      imgs += `<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true&bg_color=00000000" style="margin:4px;max-width:48%;" onerror="this.style.opacity=0.3">`;
+    statsHTML = `
+      <div class="pv-section">
+        <div class="pv-heading">📊 GitHub Stats</div>
+        <div style="text-align:center;">${imgs}</div>
+      </div>`;
+  }
+
+  // ── Activity graph ───────────────────────────────────────
+  let graphHTML = '';
+  if (STATE.features.activityGraph) {
+    graphHTML = `
+      <div class="pv-section">
+        <div class="pv-heading">📈 Activity Graph</div>
+        <div style="text-align:center;">
+          <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true&bg_color=00000000" style="width:100%;max-width:600px;" onerror="this.style.opacity=0.3">
+        </div>
+      </div>`;
+  }
+
+  // ── Trophies ─────────────────────────────────────────────
+  let trophyHTML = '';
+  if (STATE.features.trophies) {
+    trophyHTML = `
+      <div class="pv-section">
+        <div class="pv-heading">🏆 Trophies</div>
+        <div style="text-align:center;">
+          <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&margin-w=10" style="max-width:100%;" onerror="this.style.opacity=0.3">
+        </div>
+      </div>`;
+  }
+
+  // ── Work with me ─────────────────────────────────────────
+  let workHTML = '';
+  if (STATE.features.workWithMe) {
+    const site = STATE.socials.website.enabled && STATE.socials.website.value ? STATE.socials.website.value : 'yoursite.com';
+    workHTML = `
+      <div class="pv-section">
+        <div class="pv-heading">🤝 Work With Me</div>
+        <div style="border-left:3px solid ${pc};padding:8px 14px;background:rgba(255,255,255,0.04);border-radius:0 6px 6px 0;margin-bottom:10px;color:#ccc;font-style:italic;">
+          💬 Feel free to reach out — let's build something amazing together!
+        </div>
+        <div style="color:#ccc;">📧 <b>Email:</b> your.email@example.com</div>
+        <div style="color:#ccc;margin-top:4px;">🌐 <b>Portfolio:</b> <a href="${site}" style="color:${pc};">${site}</a></div>
+      </div>`;
+  }
+
+  // ── Social badges ─────────────────────────────────────────
+  const logoMap2 = { website:'google-chrome', twitter:'twitter', linkedin:'linkedin', youtube:'youtube', telegram:'telegram', whatsapp:'whatsapp' };
+  const enabledSocials = Object.entries(STATE.socials).filter(([,v]) => v.enabled && v.value);
+  let socialsHTML = '';
+  if (enabledSocials.length > 0) {
+    const badges = enabledSocials.map(([key, s]) => {
+      const meta = SOCIAL_META[key];
+      const src  = `https://img.shields.io/badge/${encodeURIComponent(meta.label)}-000000?style=for-the-badge&logo=${logoMap2[key]}&logoColor=%23${pcRaw}`;
+      return `<a href="${s.value}" target="_blank"><img src="${src}" style="margin:3px;" onerror="this.outerHTML='<span style=display:inline-block;padding:5px 14px;background:#111;border:1px solid ${pc};border-radius:4px;font-size:11px;color:${pc};margin:3px;font-family:monospace;>${meta.label}</span>'"></a>`;
+    }).join('');
+    socialsHTML = `
+      <div class="pv-section">
+        <div class="pv-heading">🌐 Connect</div>
+        <div style="text-align:center;">${badges}</div>
+      </div>`;
+  }
+
+  // ── Assemble full iframe document ────────────────────────
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    padding: 20px;
+    line-height: 1.6;
+  }
+  .pv-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .pv-section:last-child { border-bottom: none; }
+  .pv-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: ${pc};
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+    border-left: 3px solid ${pc};
+    padding-left: 10px;
+  }
+  b { color: #e6edf3; }
+  .pv-footer {
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 16px;
+    color: #666;
+    font-size: 12px;
+    font-style: italic;
+  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+</style>
+</head><body>
+  ${headerHTML}
+  ${pvHTML}
+  <div class="pv-section">
+    <div class="pv-heading">👾 About Me</div>
+    ${bioHTML}
+    ${aboutRows}
+  </div>
+  ${reposHTML}
+  ${skillsHTML}
+  ${statsHTML}
+  ${graphHTML}
+  ${trophyHTML}
+  ${workHTML}
+  ${socialsHTML}
+  <div class="pv-footer">Generated with README.GEN ⚡ — WOLF TECH Edition</div>
+</body></html>`;
+}
+
+/* ============================================================
+   PREVIEW — UPDATE
+   ============================================================ */
+let pvTimer;
+function updatePreview() {
+  clearTimeout(pvTimer);
+  pvTimer = setTimeout(() => {
+    const md  = generateReadme();
+    const lc  = document.getElementById('line-count');
+    const ph  = document.getElementById('preview-placeholder');
+    const pre = document.getElementById('preview-content');
+    const frm = document.getElementById('preview-visual');
+
+    ph.classList.add('hidden');
+    lc.textContent = md.split('\n').length + ' lines';
+
+    // Always update raw content
+    pre.textContent = md;
+
+    // Update iframe visual preview
+    const doc = frm.contentDocument || frm.contentWindow.document;
+    doc.open();
+    doc.write(buildVisualPreview());
+    doc.close();
+
+    // Show active tab
+    if (currentTab === 'visual') {
+      frm.classList.remove('hidden');
+      pre.classList.add('hidden');
+    } else {
+      pre.classList.remove('hidden');
+      frm.classList.add('hidden');
+    }
+
+    // Resize iframe to content height after render
+    setTimeout(() => {
+      try {
+        const h = frm.contentDocument.body.scrollHeight;
+        if (h > 100) frm.style.height = h + 'px';
+      } catch(e) {}
+    }, 300);
+
+    updateStats();
+  }, 150);
+}
+
+function updateStats() {
+  document.getElementById('stat-user').textContent   = STATE.username.trim() || '—';
+  document.getElementById('stat-skills').textContent = STATE.skills.length + STATE.customSkills.length;
+  document.getElementById('stat-theme').textContent  = THEMES[STATE.theme].name;
+}
+
+/* ============================================================
+   COPY / DOWNLOAD
+   ============================================================ */
+function copyReadme() {
+  const md = generateReadme();
+  if (!md.trim()) { showToast('Nothing to copy yet!', true); return; }
+  const copy = () => {
+    const btn = document.getElementById('copy-btn');
+    btn.innerHTML = '🎉 Copied! Paste on GitHub';
+    btn.classList.add('copied');
+    showToast('Copied to clipboard! 🎉');
+    setTimeout(() => { btn.innerHTML='<i class="fas fa-copy"></i> Copy README.md'; btn.classList.remove('copied'); }, 3000);
+  };
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(md).then(copy).catch(() => fallbackCopy(md, copy));
+  } else {
+    fallbackCopy(md, copy);
+  }
+}
+function fallbackCopy(text, cb) {
+  const ta = Object.assign(document.createElement('textarea'), { value: text });
+  ta.style.cssText = 'position:fixed;top:-9999px;';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); cb(); } catch(e) { showToast('Copy failed', true); }
+  document.body.removeChild(ta);
+}
+function downloadReadme() {
+  const md = generateReadme();
+  if (!md.trim()) { showToast('Nothing to download!', true); return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([md], { type:'text/markdown' }));
+  a.download = 'README.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Downloaded README.md ✓');
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let toastTimer;
+function showToast(msg, err=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderColor = err ? 'rgba(255,68,68,0.4)' : 'var(--primary-border)';
+  t.style.color = err ? 'var(--danger)' : 'var(--primary)';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ============================================================
+   HOW-TO
+   ============================================================ */
+function showHowTo() {
+  const c = document.getElementById('howto-card');
+  c.classList.toggle('hidden');
+  if (!c.classList.contains('hidden')) c.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function charCount(el, id) {
+  const max = parseInt(el.getAttribute('maxlength')) || 200;
+  const len = el.value.length;
+  const el2 = document.getElementById(id);
+  if (!el2) return;
+  el2.textContent = `${len}/${max}`;
+  el2.className = 'char-count' + (len >= max ? ' over' : len > max*0.85 ? ' warn' : '');
+}
+
+/* ============================================================
+   GITHUB PUSH
+   ============================================================ */
+function openPushModal() {
+  const md = generateReadme();
+  if (!md || !STATE.username.trim()) {
+    showToast('Add your GitHub username first!', true);
+    return;
+  }
+  const overlay = document.getElementById('push-overlay');
+  overlay.classList.remove('hidden');
+  document.getElementById('push-status').style.display = 'none';
+  document.getElementById('push-status').className = 'push-status';
+  document.getElementById('push-token-input').value = '';
+  document.getElementById('btn-push-go').disabled = false;
+  document.getElementById('btn-push-go').innerHTML = '<i class="fas fa-upload"></i> Push README';
+  setTimeout(() => document.getElementById('push-token-input').focus(), 80);
+}
+
+function closePushModal() {
+  document.getElementById('push-overlay').classList.add('hidden');
+  document.getElementById('push-token-input').value = '';
+}
+
+function setPushStatus(type, msg) {
+  const el = document.getElementById('push-status');
+  el.style.display = 'block';
+  el.className = 'push-status ' + type;
+  el.innerHTML = msg;
+}
+
+async function executePush() {
+  const token = (document.getElementById('push-token-input').value || '').trim();
+  if (!token) {
+    setPushStatus('err', '<i class="fas fa-times-circle"></i> Please enter your GitHub token.');
+    return;
+  }
+  const username = STATE.username.trim();
+  if (!username) {
+    setPushStatus('err', '<i class="fas fa-times-circle"></i> GitHub username is missing.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-push-go');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pushing...';
+  setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Checking repository…');
+
+  const md = generateReadme();
+  const encoded = btoa(unescape(encodeURIComponent(md)));
+  const apiBase = `https://api.github.com/repos/${username}/${username}/contents/README.md`;
+  const headers = {
+    'Authorization': `token ${token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    let sha = null;
+    const getRes = await fetch(apiBase, { headers });
+    if (getRes.status === 200) {
+      const data = await getRes.json();
+      sha = data.sha;
+    } else if (getRes.status === 404) {
+      setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Creating README.md…');
+    } else if (getRes.status === 401) {
+      throw new Error('Invalid or expired token. Check your Personal Access Token.');
+    } else if (getRes.status === 403) {
+      throw new Error('Token lacks permission. Make sure it has the `repo` scope.');
+    } else {
+      throw new Error(`GitHub API error ${getRes.status}.`);
+    }
+
+    setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Writing README.md…');
+
+    const body = {
+      message: '✨ Update README via README.GEN — WOLF TECH Edition',
+      content: encoded
+    };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(body)
+    });
+
+    if (putRes.status === 200 || putRes.status === 201) {
+      const action = putRes.status === 201 ? 'Created' : 'Updated';
+      setPushStatus('ok',
+        `<i class="fas fa-check-circle"></i> ${action} successfully! ` +
+        `<a href="https://github.com/${username}" target="_blank" style="color:var(--primary);text-decoration:underline;">View your profile ↗</a>`
+      );
+      btn.innerHTML = '<i class="fas fa-check"></i> Done!';
+      showToast('README pushed to GitHub! 🚀');
+    } else if (putRes.status === 401) {
+      throw new Error('Invalid or expired token.');
+    } else if (putRes.status === 403) {
+      throw new Error('Permission denied. Ensure your token has the `repo` scope.');
+    } else if (putRes.status === 404) {
+      throw new Error(`Profile repo not found. Create a repo named "${username}" on GitHub first.`);
+    } else if (putRes.status === 422) {
+      throw new Error('Conflict error — try refreshing and pushing again.');
+    } else {
+      const errBody = await putRes.json().catch(() => ({}));
+      throw new Error(errBody.message || `GitHub API error ${putRes.status}.`);
+    }
+  } catch (err) {
+    setPushStatus('err', `<i class="fas fa-times-circle"></i> ${err.message}`);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-upload"></i> Retry';
+  }
+}
+
+/* Close modal when clicking the backdrop */
+document.getElementById('push-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closePushModal();
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+loadState();
+initSession();
+renderStep(STATE.step);
+updatePreview();
+</script>
+</body>
+</html>
