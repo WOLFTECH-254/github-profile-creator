@@ -2105,9 +2105,49 @@ function buildVisualPreview() {
       </div>`;
   }
 
+  // ── Always-visible stats cards (real live images) ────────
+  const liveStatsHTML = `
+    <div class="pv-section">
+      <div class="pv-heading">📊 GitHub Stats</div>
+      <div class="stats-grid">
+        <img src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${st}&hide_border=true&bg_color=00000000&count_private=true"
+             onerror="this.style.opacity='0.25'" loading="lazy">
+        <img src="https://github-readme-streak-stats.vercel.app/?user=${u}&theme=${st}&hide_border=true&background=00000000"
+             onerror="this.style.opacity='0.25'" loading="lazy">
+      </div>
+      <div style="text-align:center;margin-top:8px;">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=compact&theme=${st}&hide_border=true&bg_color=00000000&langs_count=8"
+             style="max-width:96%;" onerror="this.style.opacity='0.25'" loading="lazy">
+      </div>
+    </div>`;
+
+  const liveTrophyHTML = `
+    <div class="pv-section">
+      <div class="pv-heading">🏆 Trophies</div>
+      <div style="text-align:center;">
+        <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${st}&no-frame=true&margin-w=6&column=4"
+             style="max-width:100%;" onerror="this.style.opacity='0.25'" loading="lazy">
+      </div>
+    </div>`;
+
+  const liveGraphHTML = `
+    <div class="pv-section">
+      <div class="pv-heading">📈 Activity Graph</div>
+      <div style="text-align:center;">
+        <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${st}&hide_border=true&bg_color=00000000"
+             style="width:100%;max-width:700px;" onerror="this.style.opacity='0.25'" loading="lazy">
+      </div>
+    </div>`;
+
   // ── Assemble full iframe document ────────────────────────
   return `<!DOCTYPE html><html><head><meta charset="UTF-8">
 <style>
+  html, body {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: #0d1117;
@@ -2132,11 +2172,20 @@ function buildVisualPreview() {
     border-left: 3px solid ${pc};
     padding-left: 10px;
   }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  .stats-grid img { width: 100%; }
   b { color: #e6edf3; }
+  img { max-width: 100%; border-radius: 6px; }
   .pv-footer {
     text-align: center;
     border-top: 1px solid rgba(255,255,255,0.08);
     padding-top: 16px;
+    margin-top: 16px;
     color: #666;
     font-size: 12px;
     font-style: italic;
@@ -2154,9 +2203,9 @@ function buildVisualPreview() {
   </div>
   ${reposHTML}
   ${skillsHTML}
-  ${statsHTML}
-  ${graphHTML}
-  ${trophyHTML}
+  ${liveStatsHTML}
+  ${liveTrophyHTML}
+  ${liveGraphHTML}
   ${workHTML}
   ${socialsHTML}
   <div class="pv-footer">Generated with README.GEN ⚡ — WOLF TECH Edition</div>
@@ -2197,13 +2246,8 @@ function updatePreview() {
       frm.classList.add('hidden');
     }
 
-    // Resize iframe to content height after render
-    setTimeout(() => {
-      try {
-        const h = frm.contentDocument.body.scrollHeight;
-        if (h > 100) frm.style.height = h + 'px';
-      } catch(e) {}
-    }, 300);
+    // Keep iframe at full panel height — content scrolls inside
+    frm.style.height = '100%';
 
     updateStats();
   }, 150);
