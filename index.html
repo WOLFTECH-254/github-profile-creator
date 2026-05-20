@@ -160,10 +160,7 @@ nav {
   gap: 1.25rem;
   position: sticky;
   top: 80px;
-  max-height: calc(100vh - 96px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0,255,0,0.2) transparent;
+  align-self: start;
 }
 
 /* ── CARDS ─────────────────────────────────────────────── */
@@ -615,11 +612,11 @@ textarea { resize: vertical; min-height: 72px; }
 
 /* ── PREVIEW PANEL ──────────────────────────────────────── */
 #preview-panel {
-  flex: 1;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  height: calc(100vh - 310px);
+  min-height: 400px;
 }
 #preview-content {
   flex: 1;
@@ -633,6 +630,7 @@ textarea { resize: vertical; min-height: 72px; }
   scrollbar-width: thin;
   scrollbar-color: rgba(0,255,0,0.2) transparent;
   padding: 2px 0;
+  height: 100%;
 }
 #preview-content::-webkit-scrollbar { width: 3px; }
 #preview-content::-webkit-scrollbar-thumb { background: rgba(0,255,0,0.2); border-radius: 2px; }
@@ -788,8 +786,8 @@ footer {
 @media (max-width: 960px) {
   #main { grid-template-columns: 1fr; }
   #wizard-col { max-height: none; overflow-y: visible; }
-  #preview-col { position: static; max-height: none; }
-  #preview-panel { min-height: 420px; }
+  #preview-col { position: static; }
+  #preview-panel { height: 60vh; min-height: 400px; }
   .feature-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 540px) {
@@ -1163,18 +1161,18 @@ footer {
       </div>
 
       <!-- Preview Content -->
-      <div class="card" id="preview-panel" style="padding:0;overflow:hidden;min-height:500px;">
+      <div class="card" id="preview-panel" style="padding:0;overflow:hidden;">
         <div id="preview-placeholder" style="padding:1.5rem;">
           <i class="fas fa-eye" style="font-size:2rem;opacity:0.2;color:var(--primary);"></i>
           <p style="font-size:0.72rem;color:var(--gray-500);line-height:1.6;margin-top:10px;">Fill in your info<br>to see the live preview</p>
         </div>
         <!-- Visual preview iframe -->
         <iframe id="preview-visual" class="hidden"
-          style="width:100%;height:100%;border:none;border-radius:0;background:#0d1117;min-height:500px;"
+          style="width:100%;height:100%;border:none;border-radius:0;background:#0d1117;"
           sandbox="allow-same-origin allow-scripts"></iframe>
         <!-- Raw markdown -->
         <pre id="preview-content" class="hidden"
-          style="padding:1rem 1.25rem;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.68rem;line-height:1.7;color:rgba(0,255,0,0.65);white-space:pre-wrap;word-break:break-all;overflow-y:auto;max-height:600px;scrollbar-width:thin;scrollbar-color:rgba(0,255,0,0.2) transparent;"></pre>
+          style="padding:1rem 1.25rem;margin:0;"></pre>
       </div>
 
       <!-- Output Buttons -->
