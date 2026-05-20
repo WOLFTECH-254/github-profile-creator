@@ -486,6 +486,21 @@ textarea { resize: vertical; min-height: 72px; }
 .theme-card[data-t="2"] .theme-check { background: #e0e0e0; color: #000; }
 .theme-card[data-t="3"] .t-name { color: #00aaff; }
 .theme-card[data-t="3"] .theme-check { background: #00aaff; color: #000; }
+.theme-card[data-t="4"] .t-name { color: #ff6b35; }
+.theme-card[data-t="4"] .theme-check { background: #ff6b35; color: #000; }
+.theme-card[data-t="5"] .t-name { color: #ff3333; }
+.theme-card[data-t="5"] .theme-check { background: #ff3333; color: #fff; }
+.theme-card[data-t="6"] .t-name { color: #ff79c6; }
+.theme-card[data-t="6"] .theme-check { background: #ff79c6; color: #000; }
+.theme-card[data-t="7"] .t-name { color: #7dcfff; }
+.theme-card[data-t="7"] .theme-check { background: #7dcfff; color: #000; }
+.theme-card[data-t="8"] .t-name { color: #88c0d0; }
+.theme-card[data-t="8"] .theme-check { background: #88c0d0; color: #000; }
+.theme-card[data-t="9"] .t-name { color: #ffd700; }
+.theme-card[data-t="9"] .theme-check { background: #ffd700; color: #000; }
+
+/* ── THEME GRID expanded ─────────────────────────────────── */
+#theme-grid { grid-template-columns: 1fr 1fr; }
 
 /* ── HEADER TYPE BUTTONS ────────────────────────────────── */
 .header-type-row { display: flex; gap: 8px; margin-bottom: 1rem; }
@@ -791,12 +806,163 @@ footer {
 .hidden { display: none !important; }
 .mt8 { margin-top: 8px; }
 .mt4 { margin-top: 4px; }
+
+/* ── PUSH MODAL ─────────────────────────────────────────── */
+#push-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+#push-modal {
+  width: 100%; max-width: 500px;
+  background: rgba(5,5,5,0.98);
+  border: 1px solid rgba(0,255,0,0.25);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 0 60px rgba(0,255,0,0.12);
+  animation: fadeInUp 0.25s ease;
+}
+#push-modal h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+#push-modal .push-sub {
+  font-size: 0.7rem;
+  color: var(--gray-500);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+#push-modal .push-sub a { color: rgba(0,255,0,0.6); text-decoration: none; }
+#push-modal .push-sub a:hover { color: var(--primary); }
+#push-token-input {
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(0,255,0,0.2);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  padding: 10px 14px;
+  outline: none;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  margin-bottom: 0.6rem;
+}
+#push-token-input:focus { border-color: rgba(0,255,0,0.45); box-shadow: 0 0 0 3px rgba(0,255,0,0.06); }
+#push-token-input::placeholder { color: var(--gray-500); }
+.push-note {
+  font-size: 0.64rem;
+  color: var(--gray-500);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.push-note i { color: var(--warn); margin-right: 4px; }
+.push-actions { display: flex; gap: 10px; }
+#btn-push-go {
+  flex: 2;
+  padding: 11px 20px;
+  background: rgba(0,255,0,0.09);
+  border: 1px solid rgba(0,255,0,0.35);
+  color: var(--primary);
+  border-radius: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+#btn-push-go:hover:not(:disabled) { background: rgba(0,255,0,0.16); border-color: rgba(0,255,0,0.55); box-shadow: var(--primary-glow); }
+#btn-push-go:disabled { opacity: 0.5; cursor: not-allowed; }
+#btn-push-cancel {
+  flex: 1;
+  padding: 11px 14px;
+  background: transparent;
+  border: 1px solid var(--primary-border);
+  color: var(--gray-400);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+#btn-push-cancel:hover { border-color: rgba(255,68,68,0.4); color: var(--danger); }
+#push-status {
+  margin-top: 1rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  display: none;
+}
+#push-status.info  { border: 1px solid rgba(0,255,0,0.2);  background: rgba(0,255,0,0.05);  color: var(--primary); }
+#push-status.ok    { border: 1px solid rgba(0,255,0,0.35); background: rgba(0,255,0,0.08);  color: var(--primary); }
+#push-status.err   { border: 1px solid rgba(255,68,68,0.35);background: rgba(255,68,68,0.06);color: var(--danger); }
+
+/* ── PUSH BUTTON ────────────────────────────────────────── */
+.btn-push {
+  flex: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 14px;
+  background: rgba(0,255,0,0.05);
+  border: 1px solid rgba(0,255,0,0.22);
+  color: rgba(0,255,0,0.75);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+.btn-push:hover { border-color: rgba(0,255,0,0.5); color: var(--primary); background: rgba(0,255,0,0.1); box-shadow: var(--primary-glow); }
 </style>
 </head>
 <body>
 
 <div class="neon-bg"></div>
 <div id="toast"></div>
+
+<!-- GITHUB PUSH MODAL -->
+<div id="push-overlay" class="hidden">
+  <div id="push-modal">
+    <h3><i class="fab fa-github" style="margin-right:8px;color:var(--primary);"></i>Push to GitHub</h3>
+    <p class="push-sub">
+      This will write <code style="color:var(--primary);background:rgba(0,255,0,0.07);padding:1px 5px;border-radius:4px;font-size:0.85em;">README.md</code>
+      directly to your special profile repo (<strong style="color:var(--gray-300);">username/username</strong>).<br>
+      Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo&description=README.GEN" target="_blank">Generate one here ↗</a>
+      — only <code style="font-size:0.85em;color:rgba(0,255,0,0.7);">repo</code> scope is needed.
+    </p>
+    <label style="font-size:0.65rem;color:var(--gray-400);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;display:block;">
+      GitHub Personal Access Token
+    </label>
+    <input type="password" id="push-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+    <p class="push-note">
+      <i class="fas fa-shield-alt"></i>
+      Your token is used only for this request and is never stored or sent anywhere except the GitHub API.
+    </p>
+    <div class="push-actions">
+      <button id="btn-push-go" onclick="executePush()">
+        <i class="fas fa-upload"></i> Push README
+      </button>
+      <button id="btn-push-cancel" onclick="closePushModal()">Cancel</button>
+    </div>
+    <div id="push-status"></div>
+  </div>
+</div>
 
 <div id="app">
 
@@ -919,6 +1085,9 @@ footer {
           <button class="btn-dl" onclick="downloadReadme()">
             <i class="fas fa-download"></i> Download
           </button>
+          <button class="btn-push" onclick="openPushModal()" title="Push directly to GitHub profile repo">
+            <i class="fab fa-github"></i> Push
+          </button>
         </div>
       </div>
 
@@ -977,10 +1146,16 @@ const PREDEFINED_SKILLS = [
 ];
 
 const THEMES = [
-  { name:'Cyberpunk Neon', statsTheme:'chartreuse-dark', color:'#00ff00', swatches:['#00ff00','#00aa00','#111'] },
-  { name:'Radical Purple',  statsTheme:'radical',        color:'#bf5fff', swatches:['#bf5fff','#00d9ff','#1a0030'] },
-  { name:'Minimal Dark',    statsTheme:'dark',           color:'#ffffff', swatches:['#ffffff','#888','#1a1a1a'] },
-  { name:'Ocean Blue',      statsTheme:'algolia',        color:'#00aaff', swatches:['#00aaff','#00ffee','#001830'] }
+  { name:'Cyberpunk Neon',  statsTheme:'chartreuse-dark', color:'#00ff00', swatches:['#00ff00','#00aa00','#111'],    desc:'Matrix green glow' },
+  { name:'Radical Purple',  statsTheme:'radical',         color:'#bf5fff', swatches:['#bf5fff','#00d9ff','#1a0030'], desc:'Vivid purple & cyan' },
+  { name:'Minimal Dark',    statsTheme:'dark',            color:'#e0e0e0', swatches:['#e0e0e0','#888','#1a1a1a'],    desc:'Clean monochrome' },
+  { name:'Ocean Blue',      statsTheme:'algolia',         color:'#00aaff', swatches:['#00aaff','#00ffee','#001830'], desc:'Deep sea blues' },
+  { name:'Sunset Fire',     statsTheme:'sunset-gradient', color:'#ff6b35', swatches:['#ff6b35','#ffaa00','#1a0800'], desc:'Warm orange flames' },
+  { name:'Hacker Red',      statsTheme:'blood',           color:'#ff3333', swatches:['#ff3333','#aa0000','#1a0000'], desc:'Blood red terminal' },
+  { name:'Rose Bloom',      statsTheme:'dracula',         color:'#ff79c6', swatches:['#ff79c6','#bd93f9','#1a0020'], desc:'Dracula pink & violet' },
+  { name:'Tokyo Night',     statsTheme:'tokyonight',      color:'#7dcfff', swatches:['#7dcfff','#bb9af7','#0d0f1a'], desc:'Neon city skyline' },
+  { name:'Nord Ice',        statsTheme:'nord',            color:'#88c0d0', swatches:['#88c0d0','#81a1c1','#1e2330'], desc:'Arctic cool tones' },
+  { name:'Golden Matrix',   statsTheme:'gruvbox',         color:'#ffd700', swatches:['#ffd700','#d79921','#1a1200'], desc:'Gold on dark retro' }
 ];
 
 const SOCIAL_META = {
@@ -1197,7 +1372,7 @@ function step4(c) {
     <div class="theme-card ${STATE.theme===i?'selected':''}" data-t="${i}" onclick="selectTheme(${i})">
       <div class="theme-check"><i class="fas fa-check" style="font-size:0.6rem;"></i></div>
       <div class="t-name">${t.name}</div>
-      <div class="t-desc">${t.statsTheme}</div>
+      <div class="t-desc">${t.desc||t.statsTheme}</div>
       <div class="t-preview">
         ${t.swatches.map(s=>`<div class="t-swatch" style="background:${s}"></div>`).join('')}
       </div>
@@ -1818,6 +1993,125 @@ function charCount(el, id) {
   el2.textContent = `${len}/${max}`;
   el2.className = 'char-count' + (len >= max ? ' over' : len > max*0.85 ? ' warn' : '');
 }
+
+/* ============================================================
+   GITHUB PUSH
+   ============================================================ */
+function openPushModal() {
+  const md = generateReadme();
+  if (!md || !STATE.username.trim()) {
+    showToast('Add your GitHub username first!', true);
+    return;
+  }
+  const overlay = document.getElementById('push-overlay');
+  overlay.classList.remove('hidden');
+  document.getElementById('push-status').style.display = 'none';
+  document.getElementById('push-status').className = 'push-status';
+  document.getElementById('push-token-input').value = '';
+  document.getElementById('btn-push-go').disabled = false;
+  document.getElementById('btn-push-go').innerHTML = '<i class="fas fa-upload"></i> Push README';
+  setTimeout(() => document.getElementById('push-token-input').focus(), 80);
+}
+
+function closePushModal() {
+  document.getElementById('push-overlay').classList.add('hidden');
+  document.getElementById('push-token-input').value = '';
+}
+
+function setPushStatus(type, msg) {
+  const el = document.getElementById('push-status');
+  el.style.display = 'block';
+  el.className = 'push-status ' + type;
+  el.innerHTML = msg;
+}
+
+async function executePush() {
+  const token = (document.getElementById('push-token-input').value || '').trim();
+  if (!token) {
+    setPushStatus('err', '<i class="fas fa-times-circle"></i> Please enter your GitHub token.');
+    return;
+  }
+  const username = STATE.username.trim();
+  if (!username) {
+    setPushStatus('err', '<i class="fas fa-times-circle"></i> GitHub username is missing.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-push-go');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pushing...';
+  setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Checking repository…');
+
+  const md = generateReadme();
+  const encoded = btoa(unescape(encodeURIComponent(md)));
+  const apiBase = `https://api.github.com/repos/${username}/${username}/contents/README.md`;
+  const headers = {
+    'Authorization': `token ${token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    let sha = null;
+    const getRes = await fetch(apiBase, { headers });
+    if (getRes.status === 200) {
+      const data = await getRes.json();
+      sha = data.sha;
+    } else if (getRes.status === 404) {
+      setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Creating README.md…');
+    } else if (getRes.status === 401) {
+      throw new Error('Invalid or expired token. Check your Personal Access Token.');
+    } else if (getRes.status === 403) {
+      throw new Error('Token lacks permission. Make sure it has the `repo` scope.');
+    } else {
+      throw new Error(`GitHub API error ${getRes.status}.`);
+    }
+
+    setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Writing README.md…');
+
+    const body = {
+      message: '✨ Update README via README.GEN — WOLF TECH Edition',
+      content: encoded
+    };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(body)
+    });
+
+    if (putRes.status === 200 || putRes.status === 201) {
+      const action = putRes.status === 201 ? 'Created' : 'Updated';
+      setPushStatus('ok',
+        `<i class="fas fa-check-circle"></i> ${action} successfully! ` +
+        `<a href="https://github.com/${username}" target="_blank" style="color:var(--primary);text-decoration:underline;">View your profile ↗</a>`
+      );
+      btn.innerHTML = '<i class="fas fa-check"></i> Done!';
+      showToast('README pushed to GitHub! 🚀');
+    } else if (putRes.status === 401) {
+      throw new Error('Invalid or expired token.');
+    } else if (putRes.status === 403) {
+      throw new Error('Permission denied. Ensure your token has the `repo` scope.');
+    } else if (putRes.status === 404) {
+      throw new Error(`Profile repo not found. Create a repo named "${username}" on GitHub first.`);
+    } else if (putRes.status === 422) {
+      throw new Error('Conflict error — try refreshing and pushing again.');
+    } else {
+      const errBody = await putRes.json().catch(() => ({}));
+      throw new Error(errBody.message || `GitHub API error ${putRes.status}.`);
+    }
+  } catch (err) {
+    setPushStatus('err', `<i class="fas fa-times-circle"></i> ${err.message}`);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-upload"></i> Retry';
+  }
+}
+
+/* Close modal when clicking the backdrop */
+document.getElementById('push-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closePushModal();
+});
 
 /* ============================================================
    INIT
