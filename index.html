@@ -151,11 +151,6 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  max-height: calc(100vh - 88px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0,255,0,0.2) transparent;
-  padding-right: 4px;
 }
 
 /* ── PREVIEW COLUMN ────────────────────────────────────── */
@@ -165,7 +160,10 @@ nav {
   gap: 1.25rem;
   position: sticky;
   top: 80px;
-  max-height: calc(100vh - 88px);
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,255,0,0.2) transparent;
 }
 
 /* ── CARDS ─────────────────────────────────────────────── */
@@ -858,16 +856,17 @@ footer {
 }
 #push-token-input:focus { border-color: rgba(0,255,0,0.45); box-shadow: 0 0 0 3px rgba(0,255,0,0.06); }
 #push-token-input::placeholder { color: var(--gray-500); }
-.push-note {
-  font-size: 0.64rem;
-  color: var(--gray-500);
-  margin-bottom: 1.25rem;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
+.push-consent-box {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,170,0,0.2);
+  border-radius: 10px;
+  background: rgba(255,170,0,0.04);
+  margin-top: 0.75rem;
 }
-.push-note i { color: var(--warn); margin-right: 4px; }
 .push-actions { display: flex; gap: 10px; }
-#btn-push-go {
+.push-agree-btn {
   flex: 2;
   padding: 11px 20px;
   background: rgba(0,255,0,0.09);
@@ -875,16 +874,15 @@ footer {
   color: var(--primary);
   border-radius: 8px;
   font-family: 'Orbitron', monospace;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-#btn-push-go:hover:not(:disabled) { background: rgba(0,255,0,0.16); border-color: rgba(0,255,0,0.55); box-shadow: var(--primary-glow); }
-#btn-push-go:disabled { opacity: 0.5; cursor: not-allowed; }
+.push-agree-btn:hover { background: rgba(0,255,0,0.16); border-color: rgba(0,255,0,0.55); box-shadow: var(--primary-glow); }
 #btn-push-cancel {
   flex: 1;
   padding: 11px 14px;
@@ -897,16 +895,45 @@ footer {
   cursor: pointer;
   transition: all 0.2s;
   letter-spacing: 0.04em;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
 }
 #btn-push-cancel:hover { border-color: rgba(255,68,68,0.4); color: var(--danger); }
+.push-step-pill {
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  border: 1px solid rgba(0,255,0,0.15);
+  color: var(--gray-500);
+  background: transparent;
+  transition: all 0.25s;
+}
+.push-step-pill.active {
+  border-color: rgba(0,255,0,0.45);
+  color: var(--primary);
+  background: rgba(0,255,0,0.08);
+  box-shadow: 0 0 10px rgba(0,255,0,0.1);
+}
+.push-inline-err {
+  margin-top: 0.75rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--danger);
+  border: 1px solid rgba(255,68,68,0.3);
+  background: rgba(255,68,68,0.05);
+  letter-spacing: 0.03em;
+}
 #push-status {
   margin-top: 1rem;
-  padding: 10px 14px;
+  padding: 12px 14px;
   border-radius: 8px;
   font-size: 0.7rem;
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.04em;
-  line-height: 1.5;
+  line-height: 1.7;
   display: none;
 }
 #push-status.info  { border: 1px solid rgba(0,255,0,0.2);  background: rgba(0,255,0,0.05);  color: var(--primary); }
@@ -939,28 +966,102 @@ footer {
 <!-- GITHUB PUSH MODAL -->
 <div id="push-overlay" class="hidden">
   <div id="push-modal">
-    <h3><i class="fab fa-github" style="margin-right:8px;color:var(--primary);"></i>Push to GitHub</h3>
-    <p class="push-sub">
-      This will write <code style="color:var(--primary);background:rgba(0,255,0,0.07);padding:1px 5px;border-radius:4px;font-size:0.85em;">README.md</code>
-      directly to your special profile repo (<strong style="color:var(--gray-300);">username/username</strong>).<br>
-      Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo&description=README.GEN" target="_blank">Generate one here ↗</a>
-      — only <code style="font-size:0.85em;color:rgba(0,255,0,0.7);">repo</code> scope is needed.
-    </p>
-    <label style="font-size:0.65rem;color:var(--gray-400);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;display:block;">
-      GitHub Personal Access Token
-    </label>
-    <input type="password" id="push-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
-    <p class="push-note">
-      <i class="fas fa-shield-alt"></i>
-      Your token is used only for this request and is never stored or sent anywhere except the GitHub API.
-    </p>
-    <div class="push-actions">
-      <button id="btn-push-go" onclick="executePush()">
-        <i class="fas fa-upload"></i> Push README
-      </button>
-      <button id="btn-push-cancel" onclick="closePushModal()">Cancel</button>
+
+    <!-- Step indicator pills -->
+    <div id="push-steps-bar" style="display:flex;gap:6px;margin-bottom:1.5rem;">
+      <div class="push-step-pill active" data-step="1">1 · Token</div>
+      <div class="push-step-pill" data-step="2">2 · Repo</div>
+      <div class="push-step-pill" data-step="3">3 · Push</div>
     </div>
-    <div id="push-status"></div>
+
+    <!-- ── STEP 1: Token + Consent ── -->
+    <div id="push-s1">
+      <h3><i class="fab fa-github" style="margin-right:8px;color:var(--primary);"></i>Connect to GitHub</h3>
+      <p class="push-sub">
+        A <strong style="color:var(--gray-300);">Personal Access Token</strong> lets this tool write directly to your repo via the GitHub API — nothing else.<br>
+        Need one? <a href="https://github.com/settings/tokens/new?scopes=repo&description=README.GEN" target="_blank">Create token ↗</a>
+        (enable <code style="font-size:0.85em;color:rgba(0,255,0,0.7);">repo</code> scope).
+      </p>
+      <label style="font-size:0.65rem;color:var(--gray-400);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;display:block;">
+        GitHub Personal Access Token <span style="color:var(--primary);">*</span>
+      </label>
+      <input type="password" id="push-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+      <div class="push-consent-box">
+        <i class="fas fa-shield-alt" style="color:var(--warn);flex-shrink:0;margin-top:2px;"></i>
+        <div>
+          <div style="font-size:0.7rem;color:var(--gray-300);margin-bottom:3px;font-weight:600;">Before you proceed, understand:</div>
+          <ul style="font-size:0.65rem;color:var(--gray-500);line-height:1.7;margin-left:14px;">
+            <li>Your token is used <strong style="color:var(--gray-400);">only</strong> for this single API call</li>
+            <li>It is <strong style="color:var(--gray-400);">never stored</strong> in localStorage or cookies</li>
+            <li>It is cleared from memory when you close this dialog</li>
+            <li>Communication goes directly to <code style="font-size:0.85em;color:rgba(0,255,0,0.6);">api.github.com</code></li>
+          </ul>
+        </div>
+      </div>
+      <div class="push-actions" style="margin-top:1.25rem;">
+        <button class="push-agree-btn" onclick="pushStep1Agree()">
+          <i class="fas fa-check-circle"></i> I Understand — Continue
+        </button>
+        <button id="btn-push-cancel" onclick="closePushModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+      <div id="push-s1-err" class="push-inline-err hidden"></div>
+    </div>
+
+    <!-- ── STEP 2: Repo Config ── -->
+    <div id="push-s2" class="hidden">
+      <h3><i class="fas fa-code-branch" style="margin-right:8px;color:var(--primary);"></i>Target Repository</h3>
+      <p class="push-sub">
+        Specify the GitHub username and repository name where the <code style="font-size:0.85em;color:rgba(0,255,0,0.7);">README.md</code> will be pushed.
+        For the <strong style="color:var(--gray-300);">special profile repo</strong>, both should be your username.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0.75rem;">
+        <div>
+          <label style="font-size:0.65rem;color:var(--gray-400);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;display:block;">
+            GitHub Username <span style="color:var(--primary);">*</span>
+          </label>
+          <input type="text" id="push-owner-input" placeholder="your-username" autocomplete="off" spellcheck="false" style="font-size:0.78rem;">
+        </div>
+        <div>
+          <label style="font-size:0.65rem;color:var(--gray-400);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;display:block;">
+            Repository Name <span style="color:var(--primary);">*</span>
+          </label>
+          <input type="text" id="push-repo-input" placeholder="your-username" autocomplete="off" spellcheck="false" style="font-size:0.78rem;">
+        </div>
+      </div>
+      <div id="push-repo-preview" style="font-size:0.68rem;color:var(--gray-500);font-family:'JetBrains Mono',monospace;padding:7px 12px;border:1px solid rgba(0,255,0,0.12);border-radius:6px;margin-bottom:1.25rem;letter-spacing:0.03em;">
+        Target: <span id="push-repo-preview-text" style="color:rgba(0,255,0,0.6);">—</span>
+      </div>
+      <div class="push-actions">
+        <button class="push-agree-btn" onclick="pushStep2Go()">
+          <i class="fas fa-arrow-right"></i> Confirm & Push
+        </button>
+        <button style="flex:1;padding:11px 14px;background:transparent;border:1px solid var(--primary-border);color:var(--gray-400);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;cursor:pointer;transition:all 0.2s;letter-spacing:0.04em;" onclick="pushGoToStep(1)">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+      </div>
+      <div id="push-s2-err" class="push-inline-err hidden"></div>
+    </div>
+
+    <!-- ── STEP 3: Pushing ── -->
+    <div id="push-s3" class="hidden">
+      <h3><i class="fas fa-upload" style="margin-right:8px;color:var(--primary);"></i>Pushing README</h3>
+      <p class="push-sub">Writing your README to <span id="push-target-label" style="color:var(--primary);font-family:'JetBrains Mono',monospace;"></span></p>
+      <div id="push-status"></div>
+      <div class="push-actions" style="margin-top:1.25rem;">
+        <button id="btn-push-close-done" class="hidden" onclick="closePushModal()" style="flex:1;padding:11px 20px;background:rgba(0,255,0,0.09);border:1px solid rgba(0,255,0,0.35);color:var(--primary);border-radius:8px;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;">
+          <i class="fas fa-check"></i> Close
+        </button>
+        <button id="btn-push-retry" class="hidden" onclick="retryPush()" style="flex:2;padding:11px 20px;background:rgba(0,255,0,0.09);border:1px solid rgba(0,255,0,0.35);color:var(--primary);border-radius:8px;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <i class="fas fa-redo"></i> Retry
+        </button>
+        <button onclick="closePushModal()" style="flex:1;padding:11px 14px;background:transparent;border:1px solid var(--primary-border);color:var(--gray-400);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;cursor:pointer;transition:all 0.2s;letter-spacing:0.04em;">
+          Cancel
+        </button>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1995,56 +2096,129 @@ function charCount(el, id) {
 }
 
 /* ============================================================
-   GITHUB PUSH
+   GITHUB PUSH — MULTI-STEP MODAL
    ============================================================ */
+let _pushToken = '';
+
 function openPushModal() {
-  const md = generateReadme();
-  if (!md || !STATE.username.trim()) {
+  if (!STATE.username.trim()) {
     showToast('Add your GitHub username first!', true);
     return;
   }
-  const overlay = document.getElementById('push-overlay');
-  overlay.classList.remove('hidden');
-  document.getElementById('push-status').style.display = 'none';
-  document.getElementById('push-status').className = 'push-status';
-  document.getElementById('push-token-input').value = '';
-  document.getElementById('btn-push-go').disabled = false;
-  document.getElementById('btn-push-go').innerHTML = '<i class="fas fa-upload"></i> Push README';
-  setTimeout(() => document.getElementById('push-token-input').focus(), 80);
+  _pushToken = '';
+  document.getElementById('push-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  pushGoToStep(1);
+  setTimeout(() => document.getElementById('push-token-input').focus(), 120);
 }
 
 function closePushModal() {
   document.getElementById('push-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+  _pushToken = '';
   document.getElementById('push-token-input').value = '';
+}
+
+function pushGoToStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('push-s' + i).classList.toggle('hidden', i !== n);
+    const pill = document.querySelector(`.push-step-pill[data-step="${i}"]`);
+    if (pill) pill.classList.toggle('active', i === n);
+  });
+  if (n === 2) {
+    const owner = document.getElementById('push-owner-input');
+    const repo  = document.getElementById('push-repo-input');
+    if (!owner.value) owner.value = STATE.username.trim();
+    if (!repo.value)  repo.value  = STATE.username.trim();
+    updateRepoPreview();
+    setTimeout(() => owner.focus(), 80);
+  }
+  if (n === 3) {
+    document.getElementById('push-status').style.display = 'none';
+    document.getElementById('push-status').className = '';
+    document.getElementById('btn-push-close-done').classList.add('hidden');
+    document.getElementById('btn-push-retry').classList.add('hidden');
+    executePush();
+  }
+}
+
+function updateRepoPreview() {
+  const o = (document.getElementById('push-owner-input').value || '').trim();
+  const r = (document.getElementById('push-repo-input').value || '').trim();
+  const txt = document.getElementById('push-repo-preview-text');
+  if (o && r) {
+    txt.textContent = `github.com/${o}/${r}/README.md`;
+    document.getElementById('push-target-label').textContent = `${o}/${r}`;
+  } else {
+    txt.textContent = '—';
+    document.getElementById('push-target-label').textContent = '';
+  }
+}
+
+/* wire up live preview on repo step inputs */
+document.addEventListener('DOMContentLoaded', () => {
+  ['push-owner-input','push-repo-input'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateRepoPreview);
+  });
+  document.getElementById('push-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closePushModal();
+  });
+});
+
+function showPushErr(stepId, msg) {
+  const el = document.getElementById(stepId);
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 4000);
+}
+
+function pushStep1Agree() {
+  const tok = (document.getElementById('push-token-input').value || '').trim();
+  if (!tok) { showPushErr('push-s1-err', 'Please enter your GitHub Personal Access Token.'); return; }
+  if (!tok.startsWith('ghp_') && !tok.startsWith('github_pat_') && tok.length < 20) {
+    showPushErr('push-s1-err', 'Token looks invalid — GitHub tokens start with ghp_ or github_pat_'); return;
+  }
+  _pushToken = tok;
+  pushGoToStep(2);
+}
+
+function pushStep2Go() {
+  const o = (document.getElementById('push-owner-input').value || '').trim();
+  const r = (document.getElementById('push-repo-input').value || '').trim();
+  if (!o) { showPushErr('push-s2-err', 'GitHub username is required.'); return; }
+  if (!r) { showPushErr('push-s2-err', 'Repository name is required.'); return; }
+  pushGoToStep(3);
+}
+
+function retryPush() {
+  document.getElementById('btn-push-retry').classList.add('hidden');
+  document.getElementById('btn-push-close-done').classList.add('hidden');
+  executePush();
 }
 
 function setPushStatus(type, msg) {
   const el = document.getElementById('push-status');
   el.style.display = 'block';
-  el.className = 'push-status ' + type;
+  el.className = type;
   el.innerHTML = msg;
 }
 
 async function executePush() {
-  const token = (document.getElementById('push-token-input').value || '').trim();
-  if (!token) {
-    setPushStatus('err', '<i class="fas fa-times-circle"></i> Please enter your GitHub token.');
-    return;
-  }
-  const username = STATE.username.trim();
-  if (!username) {
-    setPushStatus('err', '<i class="fas fa-times-circle"></i> GitHub username is missing.');
+  const token    = _pushToken;
+  const owner    = (document.getElementById('push-owner-input').value || '').trim();
+  const repoName = (document.getElementById('push-repo-input').value || '').trim();
+
+  if (!token || !owner || !repoName) {
+    setPushStatus('err', '<i class="fas fa-times-circle"></i> Missing token or repo info — go back and fill everything in.');
+    document.getElementById('btn-push-retry').classList.remove('hidden');
     return;
   }
 
-  const btn = document.getElementById('btn-push-go');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pushing...';
   setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Checking repository…');
 
   const md = generateReadme();
   const encoded = btoa(unescape(encodeURIComponent(md)));
-  const apiBase = `https://api.github.com/repos/${username}/${username}/contents/README.md`;
+  const apiBase = `https://api.github.com/repos/${owner}/${repoName}/contents/README.md`;
   const headers = {
     'Authorization': `token ${token}`,
     'Accept': 'application/vnd.github.v3+json',
@@ -2057,61 +2231,51 @@ async function executePush() {
     if (getRes.status === 200) {
       const data = await getRes.json();
       sha = data.sha;
+      setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Existing README found — updating…');
     } else if (getRes.status === 404) {
-      setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Creating README.md…');
+      setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> No README yet — creating…');
     } else if (getRes.status === 401) {
-      throw new Error('Invalid or expired token. Check your Personal Access Token.');
+      throw new Error('Invalid or expired token. Go back and check your Personal Access Token.');
     } else if (getRes.status === 403) {
-      throw new Error('Token lacks permission. Make sure it has the `repo` scope.');
+      throw new Error('Token lacks permission. Make sure it has the <code>repo</code> scope.');
     } else {
-      throw new Error(`GitHub API error ${getRes.status}.`);
+      throw new Error(`GitHub API error ${getRes.status} while checking repo.`);
     }
 
-    setPushStatus('info', '<i class="fas fa-circle-notch fa-spin"></i> Writing README.md…');
-
-    const body = {
-      message: '✨ Update README via README.GEN — WOLF TECH Edition',
-      content: encoded
-    };
+    const body = { message: '✨ Update README via README.GEN — WOLF TECH Edition', content: encoded };
     if (sha) body.sha = sha;
 
-    const putRes = await fetch(apiBase, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify(body)
-    });
+    const putRes = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) });
 
     if (putRes.status === 200 || putRes.status === 201) {
       const action = putRes.status === 201 ? 'Created' : 'Updated';
+      const profileUrl = owner === repoName
+        ? `https://github.com/${owner}`
+        : `https://github.com/${owner}/${repoName}`;
       setPushStatus('ok',
-        `<i class="fas fa-check-circle"></i> ${action} successfully! ` +
-        `<a href="https://github.com/${username}" target="_blank" style="color:var(--primary);text-decoration:underline;">View your profile ↗</a>`
+        `<i class="fas fa-check-circle"></i> <strong>${action} successfully!</strong><br>` +
+        `<a href="${profileUrl}" target="_blank" style="color:var(--primary);text-decoration:underline;margin-top:4px;display:inline-block;">` +
+        `View on GitHub ↗</a>`
       );
-      btn.innerHTML = '<i class="fas fa-check"></i> Done!';
+      document.getElementById('btn-push-close-done').classList.remove('hidden');
       showToast('README pushed to GitHub! 🚀');
     } else if (putRes.status === 401) {
       throw new Error('Invalid or expired token.');
     } else if (putRes.status === 403) {
-      throw new Error('Permission denied. Ensure your token has the `repo` scope.');
+      throw new Error('Permission denied. Ensure your token has the <code>repo</code> scope.');
     } else if (putRes.status === 404) {
-      throw new Error(`Profile repo not found. Create a repo named "${username}" on GitHub first.`);
+      throw new Error(`Repo <strong>${owner}/${repoName}</strong> not found or not accessible. Check the name and token permissions.`);
     } else if (putRes.status === 422) {
-      throw new Error('Conflict error — try refreshing and pushing again.');
+      throw new Error('Conflict error — the file may have changed. Try again.');
     } else {
       const errBody = await putRes.json().catch(() => ({}));
       throw new Error(errBody.message || `GitHub API error ${putRes.status}.`);
     }
   } catch (err) {
     setPushStatus('err', `<i class="fas fa-times-circle"></i> ${err.message}`);
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-upload"></i> Retry';
+    document.getElementById('btn-push-retry').classList.remove('hidden');
   }
 }
-
-/* Close modal when clicking the backdrop */
-document.getElementById('push-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closePushModal();
-});
 
 /* ============================================================
    INIT
